@@ -7,6 +7,13 @@
     <style>
         {{ css_content }}
     </style>
+    <!-- Vis.js Timeline -->
+    <script type="text/javascript" src="https://unpkg.com/vis-timeline/standalone/umd/vis-timeline-graph2d.min.js"></script>
+    <link href="https://unpkg.com/vis-timeline/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        .vis-item.vis-point { border-color: var(--accent); background-color: rgba(67, 97, 238, 0.2); }
+        .vis-item.vis-point.vis-selected { border-color: #fff; background-color: var(--accent); }
+    </style>
 </head>
 <body>
     <div class="layout">
@@ -113,19 +120,71 @@
                     </div>
                     {% endif %}
                 </div>
+                </div>
             </div>
+
+            <!-- YARA Matches Table -->
+            {% if yara_matches %}
+            <div class="section-panel" style="border-top: 4px solid #8e44ad;">
+                <div class="panel-header">
+                    <h2 class="panel-title">YARA Malware Rules</h2>
+                    <span class="tag danger">
+                        {{ yara_matches|length }} Matches
+                    </span>
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Rule Name</th>
+                                <th>Tags</th>
+                                <th>File Path</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for match in yara_matches %}
+                            <tr>
+                                <td>
+                                    <span class="tag" style="background: #8e44ad; color: white;">{{ match.rule_name }}</span>
+                                </td>
+                                <td>
+                                    {% for tag in match.tags %}
+                                    <span class="tag" style="background: #34495e; color: #ecf0f1; font-size: 0.7em;">{{ tag }}</span>
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    <span class="font-mono">{{ match.file_path }}</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endif %}
             
-            <!-- Future Graph Placeholder -->
-            <!-- 
+            <!-- Timeline Visualization -->
+            {% if timeline_events %}
             <div class="section-panel">
                 <div class="panel-header">
-                    <h2 class="panel-title">File System Timeline</h2>
+                    <h2 class="panel-title">Investigation Timeline</h2>
                 </div>
-                <div style="padding: 24px; text-align: center; color: var(--text-secondary);">
-                    Timeline visualization coming soon...
-                </div>
+                <div id="visualization" style="padding: 24px; border: 1px solid var(--border-color); border-radius: 4px;"></div>
+                <script type="text/javascript">
+                    var container = document.getElementById('visualization');
+                    var items = new vis.DataSet({{ timeline_events | tojson }}); 
+                    var options = {
+                        height: '300px',
+                        start: new Date(new Date().valueOf() - 24 * 60 * 60 * 1000), // 1 day ago
+                        end: new Date(new Date().valueOf() + 2 * 60 * 60 * 1000),    // 2 hours from now
+                        // zoomMax: 315360000000000, 
+                        zoomMin: 1000 * 60 * 60  // 1 hour
+                    };
+                    var timeline = new vis.Timeline(container, items, options);
+                </script>
             </div>
-            -->
+            {% endif %}
             
         </main>
     </div>

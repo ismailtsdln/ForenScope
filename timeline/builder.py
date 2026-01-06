@@ -42,3 +42,30 @@ class TimelineBuilder:
             json.dump(events, f, indent=4)
             
         return path
+
+    def build_timesketch_jsonl(self, stream_generator, filename_prefix: str) -> str:
+        """
+        Generates a JSONL file formatted for Timesketch import.
+        Required fields: message, timestamp, datetime, timestamp_desc
+        """
+        filename = f"{filename_prefix}_timesketch.jsonl"
+        path = os.path.join(self.output_dir, filename)
+        
+        with open(path, "w") as f:
+            for entry in stream_generator:
+                dt = datetime.fromtimestamp(entry.modified_time)
+                type_ = "DIR" if entry.is_dir else "FILE"
+                
+                record = {
+                    "message": f"{type_}: {entry.path} (Size: {entry.size})",
+                    "timestamp": entry.modified_time, # Epoch integer
+                    "datetime": dt.isoformat(),
+                    "timestamp_desc": "File Modified",
+                    "file_path": entry.path,
+                    "file_size": entry.size,
+                    "file_mode": entry.mode
+                }
+                
+                f.write(json.dumps(record) + "\n")
+                
+        return path

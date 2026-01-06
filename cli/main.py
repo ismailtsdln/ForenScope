@@ -40,6 +40,7 @@ def scan(
     fast: bool = typer.Option(False, "--fast", help="Enable fast mode (skip deep signature scan)"),
     engine_addr: str = typer.Option("localhost:50051", "--addr", help="Address of Go Engine"),
     report: bool = typer.Option(False, "--report", "-r", help="Generate HTML & JSON reports"),
+    pdf: bool = typer.Option(False, "--pdf", "-p", help="Export report to PDF (Requires WeasyPrint)"),
     intel: bool = typer.Option(False, "--intel", "-I", help="Run Forensic Intelligence parsers (Registry, Browser, Logs)"),
 ):
     """
@@ -175,11 +176,28 @@ def scan(
              console.print(yara_table)
 
         # Report Generation
-        if report:
+        if report or pdf:
             console.print("\n[bold yellow]📄 Generating Reports...[/bold yellow]")
             generator = ReportGenerator(output_dir="reports")
             
-            # Convert protobuf result to dict
+            # Prepare Timeline Events (Mini)
+            timeline_events = []
+            
+            # From Signatures
+            for m in result.matches:
+                timeline_events.append({
+                    "id": len(timeline_events) + 1,
+                    "content": f"Signature: {m.signature_name}",
+                    "start": datetime.now().strftime("%Y-%m-%d %H:%M:%S"), # No file timestamps in ScanResult yet, verify if we can get it
+                    "type": "point",
+                    "group": "signatures"
+                })
+            
+            # From Intellectual
+            # Ideally we capture intel modules' evidence and pass it here, but they are printed to console currently.
+            # (Future refactor: make intel parsers return data structs to main, then to report)
+            
+             # Convert protobuf result to dict
             report_data = {
                 "job_id": result.job_id,
                 "target_path": image,
@@ -190,14 +208,40 @@ def scan(
                         "file_path": m.file_path,
                         "offset": m.offset
                     } for m in result.matches
+                ],
+                "yara_matches": [
+                    {
+                        "rule_name":ym.rule_name,
+                        "tags": list(ym.tags),
+                        "file_path": ym.file_path
+                    } for ym in getattr(result, "yara_matches", [])
                 ]
             }
             
-            json_path = generator.generate_json(report_data, result.job_id)
-            html_path = generator.generate_html(report_data, result.job_id)
+                    } for ym in getattr(result, "yara_matches", [])
+                ],
+                "timeline_events": [
+                     # Insert dummy data for demo if empty, or mapped matches
+                     {
+                         "id": i, 
+                         "content": f"Match: {m.signature_name}", 
+                         "start": time.strftime('%Y-%m-%d %H:%M:%S', time.localtime()) # Approximated as now
+                     } for i, m in enumerate(result.matches)
+                ]
+            }
             
-            console.print(f"   JSON: [link={json_path}]{json_path}[/link]")
-            console.print(f"   HTML: [link={html_path}]{html_path}[/link]")
+            if report:
+                json_path = generator.generate_json(report_data, result.job_id)
+                html_path = generator.generate_html(report_data, result.job_id)
+                console.print(f"   JSON: [link={json_path}]{json_path}[/link]")
+                console.print(f"   HTML: [link={html_path}]{html_path}[/link]")
+            
+            if pdf:
+                pdf_path = generator.generate_pdf(report_data, result.job_id)
+                if pdf_path:
+                    console.print(f"   PDF:  [link={pdf_path}]{pdf_path}[/link]")
+                else:
+                    console.print("   PDF:  [red]Skipped (WeasyPrint missing)[/red]")
             
     else:
         console.print("[bold red]❌ Scan Failed![/bold red]")

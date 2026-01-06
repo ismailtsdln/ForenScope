@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package engine;
+
+option go_package = "github.com/ismailtsdln/forenscope/engine/proto";
+
+service EngineService {
+  // Performs a scan on a data source
+  rpc Scan(ScanRequest) returns (ScanResult);
+  
+  // Calculates hashes for a given file or block
+  rpc Hash(HashRequest) returns (HashResult);
+  
+  // Checks the health/status of the engine
+  rpc Ping(Empty) returns (Pong);
+}
+
+message Empty {}
+
+message Pong {
+  string status = 1;
+  int64 timestamp = 2;
+}
+
+message ScanRequest {
+  string source_path = 1;
+  string scan_type = 2; // e.g., "full", "quick", "custom"
+  repeated string signatures = 3; // Optional list of signatures to look for
+}
+
+message ScanResult {
+  string job_id = 1;
+  bool success = 2;
+  int64 files_found = 3;
+  string error_message = 4;
+}
+
+message HashRequest {
+  string file_path = 1;
+  repeated string algorithms = 2; // e.g., ["sha256", "md5"]
+}
+
+message HashResult {
+  string file_path = 1;
+  map<string, string> hashes = 2; // algo -> hash_value
+}

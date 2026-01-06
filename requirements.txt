@@ -1,0 +1,17 @@
+fastapi>=0.100.0
+uvicorn[standard]>=0.20.0
+typer[all]>=0.9.0
+grpcio>=1.50.0
+grpcio-tools>=1.50.0
+protobuf>=4.20.0
+jinja2>=3.1.0
+weasyprint>=59.0
+pydantic>=2.0.0
+python-multipart>=0.0.6
+
+# Testing & Dev
+pytest>=7.0.0
+black>=23.0.0
+mypy>=1.0.0
+flake8>=6.0.0
+pre-commit>=3.0.0

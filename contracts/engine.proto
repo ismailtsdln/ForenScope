@@ -8,6 +8,9 @@ service EngineService {
   // Performs a scan on a data source
   rpc Scan(ScanRequest) returns (ScanResult);
   
+  // Performs file carving on a raw image or disk
+  rpc Carve(CarveRequest) returns (CarveResult);
+  
   // Calculates hashes for a given file or block
   rpc Hash(HashRequest) returns (HashResult);
   
@@ -24,14 +27,34 @@ message Pong {
 
 message ScanRequest {
   string source_path = 1;
-  string scan_type = 2; // e.g., "full", "quick", "custom"
-  repeated string signatures = 3; // Optional list of signatures to look for
+  string scan_type = 2; // "full", "quick", "custom"
+  repeated string signatures = 3; // Optional: specific signature names to look for
 }
 
 message ScanResult {
   string job_id = 1;
   bool success = 2;
-  int64 files_found = 3;
+  int64 files_scanned = 3;
+  repeated FoundItem matches = 4;
+  string error_message = 5;
+}
+
+message FoundItem {
+  string file_path = 1;
+  string signature_name = 2;
+  int64 offset = 3;
+}
+
+message CarveRequest {
+  string source_path = 1;
+  string output_dir = 2;
+  int64 block_size = 3; // Default 4096
+}
+
+message CarveResult {
+  string job_id = 1;
+  bool success = 2;
+  int64 files_recovered = 3;
   string error_message = 4;
 }
 

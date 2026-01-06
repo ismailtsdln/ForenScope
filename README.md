@@ -1,80 +1,115 @@
+
 # ForenScope
 
-![Status](https://img.shields.io/badge/Status-Development-orange)
-![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
-![Go](https://img.shields.io/badge/Go-1.21%2B-cyan)
-![License](https://img.shields.io/badge/License-MIT-green)
+![Status](https://img.shields.io/badge/Status-Beta-orange?style=flat-square)
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square)
+![Go](https://img.shields.io/badge/Go-1.21%2B-cyan?style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
-**ForenScope** is a professional-grade, high-performance hybrid digital forensics platform. It combines the flexibility and rich ecosystem of Python for orchestration and analysis with the raw performance of Go for disk scanning and data processing.
+**Professional Hybrid Digital Forensics Platform**
 
-## 🚀 Features
+ForenScope is an advanced, high-performance forensic analysis tool designed for modern incident response. It leverages a unique hybrid architecture: **Python** for intelligent orchestration and parsing, and **Go** for high-speed raw data processing.
 
-- **Hybrid Architecture**: Python Orchestrator + Go Engine via gRPC.
-- **High Performance**: Parallel disk scanning, carving, and hashing powered by Go.
-- **Modular Design**: Plugin-based artifact parsers and extensible report generation.
-- **Forensic Intelligence**: Registry analysis, Browser artifacts, System logs.
-- **Timeline Analysis**: Unified timeline generation from multiple sources.
-- **Enterprise Ready**: Structured logging, error handling, worker pools, and API support.
+---
 
-## 🛠 Architecture
+## 🚀 Key Features
 
-See [ARCHITECTURE.md](ARCHITECTURE.md) for a deep dive.
+*   **Hybrid Power**: Orchestrated by Python, powered by Go. Best of both worlds.
+*   **High Performance Engine**: Parallel disk scanning, carving, and hashing.
+*   **Modular Architecture**: Plugin-based system for artifacts and reporting.
+*   **Evidence Integrity**: Strict chain-of-custody tracking.
+*   **API First**: Fully controllable via REST API or CLI.
 
-- **Python**: Logic, Parsers, API (FastAPI), CLI (Typer)
-- **Go**: Raw I/O, Scanning, Hashing, Carving
-- **Communication**: gRPC / Protobuf
+## 🏗 Architecture
 
-## ⚡ Quick Start
+The system follows a strict **Hexagonal Architecture**:
 
-### Prerequisites
-- Python 3.10+
-- Go 1.21+
-- Protoc compiler
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/ismailtsdln/ForenScope.git
-   cd ForenScope
-   ```
-
-2. **Initialize the Environment (Python)**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate
-   pip install -r requirements.txt
-   ```
-
-3. **Build the Engine (Go)**
-   ```bash
-   cd engine
-   go mod download
-   go build -o ../bin/engine main.go
-   ```
-
-4. **Generate Protobufs**
-   ```bash
-   # Scripts provided in Makefile (Coming Soon)
-   ```
-
-### Usage
-
-**CLI Example:**
-```bash
-python -m cli scan --image /path/to/disk.img --fast
+```mermaid
+graph TD
+    User[User / CLI] --> API[Python Orchestrator]
+    API --> Logic[Forensic Logic]
+    Logic --> Go{Go Engine}
+    Go --> Disk[Raw Disk / IO]
+    Go -- gRPC Results --> Logic
+    Logic --> Repo[Report Engine]
 ```
 
-**Run API Server:**
+## 🛠 Installation
+
+### Prerequisites
+*   **Python 3.10+**
+*   **Go 1.21+**
+*   **Protoc** (Protocol Buffers Compiler)
+
+### Build from Source
+
+1.  **Clone the Repository**
+    ```bash
+    git clone https://github.com/ismailtsdln/ForenScope.git
+    cd ForenScope
+    ```
+
+2.  **Setup Python Environment**
+    ```bash
+    python -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    ```
+
+3.  **Build the Platform** (Generates Protos + Compiles Go Engine)
+    ```bash
+    make all
+    ```
+
+## 💻 Usage
+
+### 1. Start the Engine
+The high-performance engine must be running to process heavy tasks.
+```bash
+./bin/engine
+```
+
+### 2. Run Commands (CLI)
+Open a new terminal and run forensic commands.
+
+**Ping the System:**
+```bash
+python cli/main.py ping
+```
+
+**Scan a Directory/Image:**
+```bash
+python cli/main.py scan --image /path/to/evidence --fast
+```
+
+### 3. API Server
+Start the REST API for remote management.
 ```bash
 uvicorn api.main:app --reload
 ```
+Swagger UI will be available at `http://127.0.0.1:8000/docs`.
 
-## 📚 Documentation
+## � Development
 
-- [Architecture](ARCHITECTURE.md)
-- [Developer Guide](docs/DEVELOPMENT.md) (Coming Soon)
+### Directory Structure
+*   `core/`: Python domain logic.
+*   `engine/`: Go logic (Scanning, Hashing).
+*   `contracts/`: Protobuf definitions.
+*   `orchestrator/`: Client code to talk to Engine.
 
-## 🛡 License
+### Testing
+```bash
+# Python Tests
+pytest
 
-MIT License
+# Go Tests
+cd engine && go test ./...
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) (Coming soon).
+
+## � License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

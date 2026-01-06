@@ -17,6 +17,7 @@ ForenScope is an advanced, high-performance forensic analysis tool designed for 
 *   **Hybrid Power**: Orchestrated by Python, powered by Go. Best of both worlds.
 *   **High Performance Engine**: Parallel disk scanning, carving, and hashing.
 *   **Modular Architecture**: Plugin-based system for artifacts and reporting.
+*   **Rich CLI Interface**: Beautiful, colored output with tables and progress bars.
 *   **Evidence Integrity**: Strict chain-of-custody tracking.
 *   **API First**: Fully controllable via REST API or CLI.
 
@@ -77,9 +78,14 @@ Open a new terminal and run forensic commands.
 python cli/main.py ping
 ```
 
-**Scan a Directory/Image:**
+**Scan a Directory/Image (Signature Analysis):**
 ```bash
 python cli/main.py scan --image /path/to/evidence --fast
+```
+
+**Carve Deleted Files (Header Recovery):**
+```bash
+python cli/main.py carve --image /path/to/disk.img --output /path/to/recovered
 ```
 
 ### 3. API Server
@@ -89,7 +95,7 @@ uvicorn api.main:app --reload
 ```
 Swagger UI will be available at `http://127.0.0.1:8000/docs`.
 
-## � Development
+## 🛡 Development
 
 ### Directory Structure
 *   `core/`: Python domain logic.
@@ -108,8 +114,8 @@ cd engine && go test ./...
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) (Coming soon).
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## � License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

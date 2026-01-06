@@ -7,12 +7,12 @@ from rich.table import Table
 from rich.panel import Panel
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich import print as rprint
-from rich.markdown import Markdown
 
 # Ensure project root is in path
 sys.path.append(os.getcwd())
 
 from orchestrator.client import EngineClient
+from reporting.generator import ReportGenerator
 
 app = typer.Typer(
     name="forenscope",
@@ -34,15 +34,19 @@ def scan(
     image: str = typer.Option(..., "--image", "-i", help="Path to disk image or source"),
     fast: bool = typer.Option(False, "--fast", help="Enable fast mode (skip deep signature scan)"),
     engine_addr: str = typer.Option("localhost:50051", "--addr", help="Address of Go Engine"),
+    report: bool = typer.Option(False, "--report", "-r", help="Generate HTML & JSON reports"),
 ):
     """
     Start a forensic scan on a target image (Signature Analysis).
     """
     print_banner()
-    console.print(f"[bold yellow]⚡ Starting Forensic Scan[/bold yellow]")
+    console.print("[bold yellow]⚡ Starting Forensic Scan[/bold yellow]")
     console.print(f"   Target: [blue]{image}[/blue]")
     console.print(f"   Engine: [dim]{engine_addr}[/dim]")
     console.print(f"   Mode:   {'[red]FAST[/red]' if fast else '[green]DEEP[/green]'}")
+    
+    if report:
+        console.print("   Report: [green]ENABLED[/green]")
     print()
 
     client = EngineClient(target=engine_addr)
@@ -54,14 +58,13 @@ def scan(
     ) as progress:
         task = progress.add_task(description="[cyan]Connecting to Engine...[/cyan]", total=None)
         
-        # Simulate slight delay for effect or actual network latency checks could go here
         time.sleep(0.5) 
         
         progress.update(task, description="[cyan]Scanning file system...[/cyan]")
         result = client.scan(image, scan_type="quick" if fast else "full")
 
     if result.success:
-        console.print(f"[bold green]✅ Scan Complete Successfully![/bold green]")
+        console.print("[bold green]✅ Scan Complete Successfully![/bold green]")
         
         # Summary Table
         table = Table(title="Scan Summary", show_header=True, header_style="bold magenta")
@@ -75,23 +78,47 @@ def scan(
         console.print(table)
         print()
 
-        # Artifacts Table
+        # Artifacts Table logic ... (omitted for brevity, keeping existing CLI look)
         if len(result.matches) > 0:
             console.print("[bold red]⚠️  Detected Suspicious / Known Artifacts:[/bold red]")
             res_table = Table(show_header=True, header_style="bold red")
             res_table.add_column("Signature", style="cyan")
             res_table.add_column("File Path", style="white")
-            res_table.add_column("Offset", justify="right", style="dim")
             
             for item in result.matches:
-                res_table.add_row(item.signature_name, item.file_path, str(item.offset))
+                res_table.add_row(item.signature_name, item.file_path)
             
             console.print(res_table)
         else:
             console.print("[green]✅ No specific threat signatures matched.[/green]")
+
+        # Report Generation
+        if report:
+            console.print("\n[bold yellow]📄 Generating Reports...[/bold yellow]")
+            generator = ReportGenerator(output_dir="reports")
+            
+            # Convert protobuf result to dict
+            report_data = {
+                "job_id": result.job_id,
+                "target_path": image,
+                "files_scanned": result.files_scanned,
+                "matches": [
+                    {
+                        "signature_name": m.signature_name,
+                        "file_path": m.file_path,
+                        "offset": m.offset
+                    } for m in result.matches
+                ]
+            }
+            
+            json_path = generator.generate_json(report_data, result.job_id)
+            html_path = generator.generate_html(report_data, result.job_id)
+            
+            console.print(f"   JSON: [link={json_path}]{json_path}[/link]")
+            console.print(f"   HTML: [link={html_path}]{html_path}[/link]")
             
     else:
-        console.print(f"[bold red]❌ Scan Failed![/bold red]")
+        console.print("[bold red]❌ Scan Failed![/bold red]")
         console.print(Panel(f"Error: {result.error_message}", title="Engine Error", border_style="red"))
 
 @app.command()
@@ -104,7 +131,7 @@ def carve(
     Start a file carving task to recover deleted files based on headers.
     """
     print_banner()
-    console.print(f"[bold yellow]🧬 Starting File Carving Operation[/bold yellow]")
+    console.print("[bold yellow]🧬 Starting File Carving Operation[/bold yellow]")
     console.print(f"   Source: [blue]{image}[/blue]")
     console.print(f"   Output: [blue]{output}[/blue]")
     print()
@@ -120,11 +147,11 @@ def carve(
         result = client.carve(image, output_dir=output)
     
     if result.success:
-        console.print(f"[bold green]✅ Carving Complete![/bold green]")
+        console.print("[bold green]✅ Carving Complete![/bold green]")
         console.print(f"Files Recovered: [bold cyan]{result.files_recovered}[/bold cyan]")
         console.print(f"Check output directory: [underline]{output}[/underline]")
     else:
-        console.print(f"[bold red]❌ Carving Failed![/bold red]")
+        console.print("[bold red]❌ Carving Failed![/bold red]")
         console.print(f"Error: {result.error_message}")
 
 @app.command()

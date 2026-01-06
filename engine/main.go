@@ -14,6 +14,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
+	"github.com/ismailtsdln/forenscope/engine/carver"
 	pb "github.com/ismailtsdln/forenscope/engine/proto"
 	"github.com/ismailtsdln/forenscope/engine/scanner"
 )
@@ -25,11 +26,17 @@ var (
 type server struct {
 	pb.UnimplementedEngineServiceServer
 	scanner *scanner.Scanner
+	carver  *carver.Carver
 }
 
 func (s *server) Scan(ctx context.Context, req *pb.ScanRequest) (*pb.ScanResult, error) {
 	log.Printf("Received scan request for: %v [Type: %s]", req.SourcePath, req.ScanType)
 	return s.scanner.ScanDir(req.SourcePath)
+}
+
+func (s *server) Carve(ctx context.Context, req *pb.CarveRequest) (*pb.CarveResult, error) {
+	log.Printf("Received carve request for: %v (Target: %v)", req.SourcePath, req.OutputDir)
+	return s.carver.CarveFile(req.SourcePath, req.OutputDir)
 }
 
 func (s *server) Hash(ctx context.Context, req *pb.HashRequest) (*pb.HashResult, error) {
@@ -55,20 +62,20 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	// Initialize the scanner with a worker pool of 20
-	// We pass a background context or a global app context if needed in the future
+	// Initialize components
 	scanEngine := scanner.NewScanner(20)
+	carveEngine := carver.NewCarver(4096)
 	defer scanEngine.Close()
 
 	s := grpc.NewServer()
 	pb.RegisterEngineServiceServer(s, &server{
 		scanner: scanEngine,
+		carver:  carveEngine,
 	})
 
-	// Register reflection service on gRPC server for debugging with grpcurl
 	reflection.Register(s)
 
-	// Graceful shutdown channel
+	// Graceful shutdown
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 

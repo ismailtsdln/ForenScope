@@ -4,14 +4,9 @@ import logging
 import grpc
 
 # Add core/rpc to path so generated files can import each other
-# This is a runtime hack to handle protobuf's generated imports which are not relative by default
 RPC_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "core", "rpc")
 if RPC_DIR not in sys.path:
     sys.path.append(RPC_DIR)
-
-# Now we can safely import the generated PB modules
-# We import them within the class or just here, but we reference them carefully.
-# Note: The generated code uses 'import engine_pb2', so adding RPC_DIR to sys.path makes that work.
 
 import engine_pb2
 import engine_pb2_grpc
@@ -34,8 +29,26 @@ class EngineClient:
             return self.stub.Scan(request)
         except grpc.RpcError as e:
             logging.error(f"RPC failed: {e}")
-            # Create a failure result
             res = engine_pb2.ScanResult()
+            res.success = False
+            res.error_message = str(e)
+            return res
+
+    def carve(self, path: str, output_dir: str) -> engine_pb2.CarveResult:
+        """
+        Trigger a file carving task on the Go engine.
+        """
+        request = engine_pb2.CarveRequest(
+            source_path=path,
+            output_dir=output_dir,
+            block_size=4096
+        )
+        try:
+            logging.info(f"Sending Carve request for {path} -> {output_dir}")
+            return self.stub.Carve(request)
+        except grpc.RpcError as e:
+            logging.error(f"RPC failed: {e}")
+            res = engine_pb2.CarveResult()
             res.success = False
             res.error_message = str(e)
             return res

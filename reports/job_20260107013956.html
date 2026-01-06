@@ -1,0 +1,3932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ForenScope Report - job_20260107013956</title>
+    <style>
+        @import url(&#39;https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap&#39;);
+
+:root {
+    --bg-body: #fdfdfd;
+    --bg-card: #ffffff;
+    --bg-sidebar: #0f172a;
+    
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-light: #f8fafc;
+    
+    --accent: #6366f1; /* Indigo */
+    --accent-hover: #4f46e5;
+    --danger: #ef4444;
+    --success: #10b981;
+    --warning: #f59e0b;
+    
+    --border-light: #e2e8f0;
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: &#39;Outfit&#39;, sans-serif;
+    background-color: #f1f5f9;
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background-color: var(--bg-sidebar);
+    color: var(--text-light);
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    position: fixed;
+    height: 100vh;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo span {
+    color: var(--accent);
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-item {
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #94a3b8;
+    transition: all 0.2s ease;
+}
+
+.nav-item.active, .nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.footer-meta {
+    margin-top: auto;
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 260px;
+    flex: 1;
+    padding: 40px;
+}
+
+.header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.page-title h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.page-title p {
+    color: var(--text-secondary);
+    margin: 4px 0 0 0;
+    font-size: 0.9rem;
+}
+
+.badge-scan {
+    background-color: #e0e7ff;
+    color: var(--accent);
+    padding: 6px 12px;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid #c7d2fe;
+}
+
+/* Cards */
+.grid-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    background: var(--bg-card);
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.stat-value {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.stat-icon {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+/* Charts/Tables Section */
+.section-panel {
+    background: var(--bg-card);
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-light);
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.panel-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #f8fafc;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    padding: 16px 24px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+}
+
+td {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover {
+    background-color: #f8fafc;
+}
+
+/* Typography Helpers */
+.font-mono {
+    font-family: &#39;JetBrains Mono&#39;, monospace;
+    font-size: 0.85rem;
+    background: #f1f5f9;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: #475569;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.tag.danger {
+    background-color: #fef2f2;
+    color: var(--danger);
+    border: 1px solid #fecaca;
+}
+
+.tag.success {
+    background-color: #ecfdf5;
+    color: var(--success);
+    border: 1px solid #a7f3d0;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px;
+    color: var(--text-secondary);
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span>⚡</span> ForenScope
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item active">Dashboard</li>
+                <li class="nav-item">Artifacts</li>
+                <li class="nav-item">Timeline</li>
+                <li class="nav-item">System Log</li>
+            </ul>
+            <div class="footer-meta">
+                <p>Generated via Engine v0.1.0</p>
+                <p>2026-01-07 01:39:56</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <div class="header-bar">
+                <div class="page-title">
+                    <h1>Investigation Report</h1>
+                    <p>Case ID: <span class="font-mono">job_20260107013956</span></p>
+                </div>
+                <div class="badge-scan">Status: COMPLETE</div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid-stats">
+                <div class="stat-card">
+                    <div class="stat-title">Files Scanned</div>
+                    <div class="stat-value">8543</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Artifacts Detected</div>
+                    <div class="stat-value" style="color: var(--danger);">
+                        296
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Target Source</div>
+                    <div class="stat-value" style="font-size: 1rem; color: var(--text-secondary); word-break: break-all;">
+                        .
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Risk Level</div>
+                    <div class="stat-value">
+                        
+                        <span style="color: var(--danger)">CRITICAL</span>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- Artifacts Table -->
+            <div class="section-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">Detected Artifacts</h2>
+                    <span class="tag danger">
+                        296 Issues
+                    </span>
+                </div>
+                
+                <div class="table-container">
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Signature Type</th>
+                                <th>File Path</th>
+                                <th>Offset / Meta</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/bin/python</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/bin/python3</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/bin/python3.14</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/bin/𝜋thon</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/4c842c94c09923bae9e4__mypyc.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/30fcd23745efe32ce681__mypyc.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/.dylibs/liblcms2.2.dylib</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/.dylibs/libpng16.16.dylib</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/.dylibs/libwebp.7.dylib</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/.dylibs/libxcb.1.1.0.dylib</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/.dylibs/liblzma.5.dylib</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/.dylibs/libsharpyuv.0.dylib</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/.dylibs/libwebpdemux.2.dylib</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/.dylibs/libXau.6.dylib</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/.dylibs/libharfbuzz.0.dylib</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/.dylibs/libbrotlidec.1.2.0.dylib</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/.dylibs/libjpeg.62.4.0.dylib</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/.dylibs/libz.1.3.1.zlib-ng.dylib</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/.dylibs/libwebpmux.3.dylib</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/.dylibs/libopenjp2.2.5.4.dylib</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/.dylibs/libavif.16.3.0.dylib</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/.dylibs/libbrotlicommon.1.2.0.dylib</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/.dylibs/libfreetype.6.dylib</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/.dylibs/libtiff.6.dylib</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/_imaging.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/_imagingmorph.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/_imagingcms.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/_imagingmath.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/_imagingft.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/_avif.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/_imagingtk.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/PIL/_webp.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/_cffi_backend.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/__init__.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/const.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/handle_ipynb_magics.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/linegen.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/mode.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/nodes.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/lines.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/numerics.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/parsing.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/ranges.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/strings.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/resources/__init__.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/schema.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/rusty.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/trans.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/cache.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/brackets.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/_width_table.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/black/comments.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/blib2to3/pgen2/conv.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/blib2to3/pgen2/driver.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/blib2to3/pgen2/literals.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/blib2to3/pgen2/parse.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/blib2to3/pgen2/pgen.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/blib2to3/pgen2/token.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/blib2to3/pygram.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/blib2to3/pytree.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/blib2to3/pgen2/tokenize.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/blib2to3/pgen2/grammar.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/httptools/parser/url_parser.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/httptools/parser/parser.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/librt/base64.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/librt/strings.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/librt/internal.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/markupsafe/_speedups.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/__init__.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/argmap.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/binder.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/build.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/cache.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/checker.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/checker_shared.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/checker_state.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/checkexpr.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/applytype.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/checkmember.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/checkpattern.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/checkstrformat.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/config_parser.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/constraints.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/constant_fold.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/copytype.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/defaults.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/dmypy/__init__.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/dmypy/client.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/dmypy_os.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/dmypy_server.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/dmypy_util.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/erasetype.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/error_formatter.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/errorcodes.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/errors.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/evalexpr.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/expandtype.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/api.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/fixup.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/freetree.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/fscache.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/fswatcher.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/gclogger.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/git.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/graph_utils.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/infer.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/indirection.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/ipc.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/inspections.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/join.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/literals.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/lookup.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/main.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/maptype.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/memprofile.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/meet.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/message_registry.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/messages.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/metastore.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/exprtotype.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/find_sources.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/fastparse.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/operators.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/parse.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/partially_defined.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/options.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/patterns.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/plugin.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/mixedtraverser.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/modulefinder.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/mro.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/moduleinspect.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/nodes.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/plugins/__init__.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/plugins/attrs.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/plugins/common.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/plugins/ctypes.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/plugins/constants.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/plugins/enums.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/plugins/dataclasses.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/plugins/default.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/plugins/functools.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/plugins/proper_plugin.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/plugins/singledispatch.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/reachability.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/report.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/renaming.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/refinfo.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/scope.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/semanal.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/semanal_classprop.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/semanal_infer.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/semanal_enum.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/semanal_main.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/semanal_namedtuple.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/semanal_pass1.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/semanal_typeargs.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/semanal_newtype.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/semanal_shared.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/semanal_typeddict.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/server/__init__.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/server/aststrip.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/server/astmerge.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/server/astdiff.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/server/deps.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/server/mergecheck.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/server/objgraph.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/server/target.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/server/subexpr.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/server/trigger.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/server/update.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/sharedparse.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/solve.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/state.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/stats.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/strconv.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/subtypes.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/stubgen.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/suggestions.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/stubinfo.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/stubutil.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/test/visitors.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/traverser.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/treetransform.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/types_utils.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/type_visitor.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/types.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/typeops.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/typeanal.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/tvar_scope.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/typestate.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/typevars.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/typetraverser.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/typevartuples.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/util.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypy/visitor.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/analysis/__init__.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/__init__.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/analysis/attrdefined.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/analysis/blockfreq.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/analysis/capsule_deps.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/analysis/dataflow.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/analysis/selfleaks.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/analysis/ircheck.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/annotate.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/build.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/codegen/__init__.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/codegen/emit.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/codegen/cstring.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/codegen/emitclass.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/crash.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/errors.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/ir/__init__.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/ir/class_ir.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/ir/func_ir.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/ir/ops.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/ir/module_ir.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/ir/pprint.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/ir/rtypes.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/common.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/__init__.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/ast_helpers.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/callable_class.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/classdef.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/builder.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/context.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/constant_fold.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/expression.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/for_helpers.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/function.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/ll_builder.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/main.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/generator.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/format_str_tokenizer.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/mapper.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/prebuildvisitor.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/missingtypevisitor.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/match.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/prepare.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/nonlocalcontrol.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/env_class.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/codegen/literals.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/specialize.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/codegen/emitmodule.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/codegen/emitwrapper.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/codegen/emitfunc.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/statement.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/targets.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/util.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/vtable.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/irbuild/visitor.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/lower/__init__.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/lower/int_ops.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/lower/list_ops.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/lower/registry.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/lower/misc_ops.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/namegen.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/options.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/primitives/__init__.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/primitives/dict_ops.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/primitives/bytes_ops.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/primitives/exc_ops.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/primitives/float_ops.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/primitives/misc_ops.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/primitives/generic_ops.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/primitives/int_ops.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/primitives/list_ops.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/primitives/registry.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/primitives/set_ops.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/primitives/weakref_ops.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/primitives/tuple_ops.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/rt_subtype.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/primitives/str_ops.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/subtype.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/sametype.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/transform/__init__.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/transform/copy_propagation.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/transform/exceptions.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/transform/ir_transform.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/transform/spill.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/transform/log_trace.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/transform/flag_elimination.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/transform/uninit.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/transform/refcount.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/mypyc/transform/lower.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">ZIP/Jar/Docx</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/pkg_resources/tests/data/my-test-package-zip/my-test-package.zip</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">ZIP/Jar/Docx</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/pkg_resources/tests/data/my-test-package_zipped-egg/my_test_package-1.0-py3.7.egg</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/pydantic_core/_pydantic_core.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">ZIP/Jar/Docx</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/virtualenv/seed/wheels/embed/pip-25.3-py3-none-any.whl</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">ZIP/Jar/Docx</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/virtualenv/seed/wheels/embed/setuptools-80.9.0-py3-none-any.whl</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">ZIP/Jar/Docx</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/virtualenv/seed/wheels/embed/wheel-0.45.1-py3-none-any.whl</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">ZIP/Jar/Docx</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/virtualenv/seed/wheels/embed/setuptools-75.3.2-py3-none-any.whl</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">ZIP/Jar/Docx</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/virtualenv/seed/wheels/embed/pip-25.0.1-py3-none-any.whl</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/watchfiles/_rust_notify.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">.venv/lib/python3.14/site-packages/yaml/_yaml.cpython-314-darwin.so</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <span class="tag danger">Mach-O (64-bit)</span>
+                                </td>
+                                <td>
+                                    <span class="font-mono">bin/engine</span>
+                                </td>
+                                <td style="color: var(--text-secondary);">
+                                    Offset: 0
+                                </td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                    
+                </div>
+            </div>
+            
+            <!-- Future Graph Placeholder -->
+            <!-- 
+            <div class="section-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">File System Timeline</h2>
+                </div>
+                <div style="padding: 24px; text-align: center; color: var(--text-secondary);">
+                    Timeline visualization coming soon...
+                </div>
+            </div>
+            -->
+            
+        </main>
+    </div>
+</body>
+</html>

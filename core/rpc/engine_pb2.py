@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0c\x65ngine.proto\x12\x06\x65ngine\"\x07\n\x05\x45mpty\")\n\x04Pong\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x11\n\ttimestamp\x18\x02 \x01(\x03\"I\n\x0bScanRequest\x12\x13\n\x0bsource_path\x18\x01 \x01(\t\x12\x11\n\tscan_type\x18\x02 \x01(\t\x12\x12\n\nsignatures\x18\x03 \x03(\t\"\x7f\n\nScanResult\x12\x0e\n\x06job_id\x18\x01 \x01(\t\x12\x0f\n\x07success\x18\x02 \x01(\x08\x12\x15\n\rfiles_scanned\x18\x03 \x01(\x03\x12\"\n\x07matches\x18\x04 \x03(\x0b\x32\x11.engine.FoundItem\x12\x15\n\rerror_message\x18\x05 \x01(\t\"F\n\tFoundItem\x12\x11\n\tfile_path\x18\x01 \x01(\t\x12\x16\n\x0esignature_name\x18\x02 \x01(\t\x12\x0e\n\x06offset\x18\x03 \x01(\x03\"K\n\x0c\x43\x61rveRequest\x12\x13\n\x0bsource_path\x18\x01 \x01(\t\x12\x12\n\noutput_dir\x18\x02 \x01(\t\x12\x12\n\nblock_size\x18\x03 \x01(\x03\"^\n\x0b\x43\x61rveResult\x12\x0e\n\x06job_id\x18\x01 \x01(\t\x12\x0f\n\x07success\x18\x02 \x01(\x08\x12\x17\n\x0f\x66iles_recovered\x18\x03 \x01(\x03\x12\x15\n\rerror_message\x18\x04 \x01(\t\"4\n\x0bHashRequest\x12\x11\n\tfile_path\x18\x01 \x01(\t\x12\x12\n\nalgorithms\x18\x02 \x03(\t\"~\n\nHashResult\x12\x11\n\tfile_path\x18\x01 \x01(\t\x12.\n\x06hashes\x18\x02 \x03(\x0b\x32\x1e.engine.HashResult.HashesEntry\x1a-\n\x0bHashesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\" \n\x0bWalkRequest\x12\x11\n\troot_path\x18\x01 \x01(\t\"\x89\x01\n\tWalkEntry\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0c\n\x04size\x18\x02 \x01(\x03\x12\x0c\n\x04mode\x18\x03 \x01(\x03\x12\x15\n\rmodified_time\x18\x04 \x01(\x03\x12\x15\n\raccessed_time\x18\x05 \x01(\x03\x12\x14\n\x0c\x63reated_time\x18\x06 \x01(\x03\x12\x0e\n\x06is_dir\x18\x07 \x01(\x08\x32\xfc\x01\n\rEngineService\x12/\n\x04Scan\x12\x13.engine.ScanRequest\x1a\x12.engine.ScanResult\x12\x32\n\x05\x43\x61rve\x12\x14.engine.CarveRequest\x1a\x13.engine.CarveResult\x12/\n\x04Hash\x12\x13.engine.HashRequest\x1a\x12.engine.HashResult\x12#\n\x04Ping\x12\r.engine.Empty\x1a\x0c.engine.Pong\x12\x30\n\x04Walk\x12\x13.engine.WalkRequest\x1a\x11.engine.WalkEntry0\x01\x42\x30Z.github.com/ismailtsdln/forenscope/engine/protob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0c\x65ngine.proto\x12\x06\x65ngine\"\x07\n\x05\x45mpty\")\n\x04Pong\x12\x0e\n\x06status\x18\x01 \x01(\t\x12\x11\n\ttimestamp\x18\x02 \x01(\x03\"a\n\x0bScanRequest\x12\x13\n\x0bsource_path\x18\x01 \x01(\t\x12\x11\n\tscan_type\x18\x02 \x01(\t\x12\x12\n\nsignatures\x18\x03 \x03(\t\x12\x16\n\x0eyara_rule_path\x18\x04 \x01(\t\"\xa8\x01\n\nScanResult\x12\x0e\n\x06job_id\x18\x01 \x01(\t\x12\x0f\n\x07success\x18\x02 \x01(\x08\x12\x15\n\rfiles_scanned\x18\x03 \x01(\x03\x12\"\n\x07matches\x18\x04 \x03(\x0b\x32\x11.engine.FoundItem\x12\x15\n\rerror_message\x18\x05 \x01(\t\x12\'\n\x0cyara_matches\x18\x06 \x03(\x0b\x32\x11.engine.YaraMatch\"?\n\tYaraMatch\x12\x11\n\tfile_path\x18\x01 \x01(\t\x12\x11\n\trule_name\x18\x02 \x01(\t\x12\x0c\n\x04tags\x18\x03 \x03(\t\"F\n\tFoundItem\x12\x11\n\tfile_path\x18\x01 \x01(\t\x12\x16\n\x0esignature_name\x18\x02 \x01(\t\x12\x0e\n\x06offset\x18\x03 \x01(\x03\"K\n\x0c\x43\x61rveRequest\x12\x13\n\x0bsource_path\x18\x01 \x01(\t\x12\x12\n\noutput_dir\x18\x02 \x01(\t\x12\x12\n\nblock_size\x18\x03 \x01(\x03\"^\n\x0b\x43\x61rveResult\x12\x0e\n\x06job_id\x18\x01 \x01(\t\x12\x0f\n\x07success\x18\x02 \x01(\x08\x12\x17\n\x0f\x66iles_recovered\x18\x03 \x01(\x03\x12\x15\n\rerror_message\x18\x04 \x01(\t\"4\n\x0bHashRequest\x12\x11\n\tfile_path\x18\x01 \x01(\t\x12\x12\n\nalgorithms\x18\x02 \x03(\t\"~\n\nHashResult\x12\x11\n\tfile_path\x18\x01 \x01(\t\x12.\n\x06hashes\x18\x02 \x03(\x0b\x32\x1e.engine.HashResult.HashesEntry\x1a-\n\x0bHashesEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\" \n\x0bWalkRequest\x12\x11\n\troot_path\x18\x01 \x01(\t\"\x89\x01\n\tWalkEntry\x12\x0c\n\x04path\x18\x01 \x01(\t\x12\x0c\n\x04size\x18\x02 \x01(\x03\x12\x0c\n\x04mode\x18\x03 \x01(\x03\x12\x15\n\rmodified_time\x18\x04 \x01(\x03\x12\x15\n\raccessed_time\x18\x05 \x01(\x03\x12\x14\n\x0c\x63reated_time\x18\x06 \x01(\x03\x12\x0e\n\x06is_dir\x18\x07 \x01(\x08\x32\xfc\x01\n\rEngineService\x12/\n\x04Scan\x12\x13.engine.ScanRequest\x1a\x12.engine.ScanResult\x12\x32\n\x05\x43\x61rve\x12\x14.engine.CarveRequest\x1a\x13.engine.CarveResult\x12/\n\x04Hash\x12\x13.engine.HashRequest\x1a\x12.engine.HashResult\x12#\n\x04Ping\x12\r.engine.Empty\x1a\x0c.engine.Pong\x12\x30\n\x04Walk\x12\x13.engine.WalkRequest\x1a\x11.engine.WalkEntry0\x01\x42\x30Z.github.com/ismailtsdln/forenscope/engine/protob\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -29,25 +29,27 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _globals['_PONG']._serialized_start=33
   _globals['_PONG']._serialized_end=74
   _globals['_SCANREQUEST']._serialized_start=76
-  _globals['_SCANREQUEST']._serialized_end=149
-  _globals['_SCANRESULT']._serialized_start=151
-  _globals['_SCANRESULT']._serialized_end=278
-  _globals['_FOUNDITEM']._serialized_start=280
-  _globals['_FOUNDITEM']._serialized_end=350
-  _globals['_CARVEREQUEST']._serialized_start=352
-  _globals['_CARVEREQUEST']._serialized_end=427
-  _globals['_CARVERESULT']._serialized_start=429
-  _globals['_CARVERESULT']._serialized_end=523
-  _globals['_HASHREQUEST']._serialized_start=525
-  _globals['_HASHREQUEST']._serialized_end=577
-  _globals['_HASHRESULT']._serialized_start=579
-  _globals['_HASHRESULT']._serialized_end=705
-  _globals['_HASHRESULT_HASHESENTRY']._serialized_start=660
-  _globals['_HASHRESULT_HASHESENTRY']._serialized_end=705
-  _globals['_WALKREQUEST']._serialized_start=707
-  _globals['_WALKREQUEST']._serialized_end=739
-  _globals['_WALKENTRY']._serialized_start=742
-  _globals['_WALKENTRY']._serialized_end=879
-  _globals['_ENGINESERVICE']._serialized_start=882
-  _globals['_ENGINESERVICE']._serialized_end=1134
+  _globals['_SCANREQUEST']._serialized_end=173
+  _globals['_SCANRESULT']._serialized_start=176
+  _globals['_SCANRESULT']._serialized_end=344
+  _globals['_YARAMATCH']._serialized_start=346
+  _globals['_YARAMATCH']._serialized_end=409
+  _globals['_FOUNDITEM']._serialized_start=411
+  _globals['_FOUNDITEM']._serialized_end=481
+  _globals['_CARVEREQUEST']._serialized_start=483
+  _globals['_CARVEREQUEST']._serialized_end=558
+  _globals['_CARVERESULT']._serialized_start=560
+  _globals['_CARVERESULT']._serialized_end=654
+  _globals['_HASHREQUEST']._serialized_start=656
+  _globals['_HASHREQUEST']._serialized_end=708
+  _globals['_HASHRESULT']._serialized_start=710
+  _globals['_HASHRESULT']._serialized_end=836
+  _globals['_HASHRESULT_HASHESENTRY']._serialized_start=791
+  _globals['_HASHRESULT_HASHESENTRY']._serialized_end=836
+  _globals['_WALKREQUEST']._serialized_start=838
+  _globals['_WALKREQUEST']._serialized_end=870
+  _globals['_WALKENTRY']._serialized_start=873
+  _globals['_WALKENTRY']._serialized_end=1010
+  _globals['_ENGINESERVICE']._serialized_start=1013
+  _globals['_ENGINESERVICE']._serialized_end=1265
 # @@protoc_insertion_point(module_scope)

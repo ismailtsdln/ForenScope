@@ -21,9 +21,12 @@ import (
 )
 
 var (
-	port = flag.Int("port", 50051, "The server port")
+	port      = flag.Int("port", 50051, "The server port")
+	yaraRules = flag.String("yara-rules", "", "Path to YARA rules file (optional)")
 )
 
+// server implements the EngineServiceServer interface
+// We embed Unimplemented to ensure forward compatibility
 type server struct {
 	pb.UnimplementedEngineServiceServer
 	scanner *scanner.Scanner
@@ -32,6 +35,7 @@ type server struct {
 
 func (s *server) Scan(ctx context.Context, req *pb.ScanRequest) (*pb.ScanResult, error) {
 	log.Printf("Received scan request for: %v [Type: %s]", req.SourcePath, req.ScanType)
+	// Signatures in ScanRequest could be passed to ScanDir if we supported filtering
 	return s.scanner.ScanDir(req.SourcePath)
 }
 
@@ -64,8 +68,18 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
+	// Initialize YARA Scanner (Optional)
+	yaraScan, err := scanner.NewYaraScanner(*yaraRules)
+	if err != nil {
+		log.Printf("Warning: Failed to initialize YARA scanner: %v", err)
+		// Proceed with disabled/empty scanner
+		yaraScan, _ = scanner.NewYaraScanner("")
+	} else if *yaraRules != "" {
+		log.Printf("YARA Scanner initialized with rules from %s", *yaraRules)
+	}
+
 	// Initialize components
-	scanEngine := scanner.NewScanner(20)
+	scanEngine := scanner.NewScanner(20, yaraScan)
 	carveEngine := carver.NewCarver(4096)
 	defer scanEngine.Close()
 

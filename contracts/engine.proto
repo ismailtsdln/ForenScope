@@ -32,6 +32,7 @@ message ScanRequest {
   string source_path = 1;
   string scan_type = 2; // "full", "quick", "custom"
   repeated string signatures = 3; // Optional: specific signature names to look for
+  string yara_rule_path = 4; // Optional: Path to YARA rules file
 }
 
 message ScanResult {
@@ -40,6 +41,13 @@ message ScanResult {
   int64 files_scanned = 3;
   repeated FoundItem matches = 4;
   string error_message = 5;
+  repeated YaraMatch yara_matches = 6;
+}
+
+message YaraMatch {
+  string file_path = 1;
+  string rule_name = 2;
+  repeated string tags = 3;
 }
 
 message FoundItem {

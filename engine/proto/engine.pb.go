@@ -112,8 +112,9 @@ func (x *Pong) GetTimestamp() int64 {
 type ScanRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SourcePath    string                 `protobuf:"bytes,1,opt,name=source_path,json=sourcePath,proto3" json:"source_path,omitempty"`
-	ScanType      string                 `protobuf:"bytes,2,opt,name=scan_type,json=scanType,proto3" json:"scan_type,omitempty"` // "full", "quick", "custom"
-	Signatures    []string               `protobuf:"bytes,3,rep,name=signatures,proto3" json:"signatures,omitempty"`             // Optional: specific signature names to look for
+	ScanType      string                 `protobuf:"bytes,2,opt,name=scan_type,json=scanType,proto3" json:"scan_type,omitempty"`               // "full", "quick", "custom"
+	Signatures    []string               `protobuf:"bytes,3,rep,name=signatures,proto3" json:"signatures,omitempty"`                           // Optional: specific signature names to look for
+	YaraRulePath  string                 `protobuf:"bytes,4,opt,name=yara_rule_path,json=yaraRulePath,proto3" json:"yara_rule_path,omitempty"` // Optional: Path to YARA rules file
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -169,6 +170,13 @@ func (x *ScanRequest) GetSignatures() []string {
 	return nil
 }
 
+func (x *ScanRequest) GetYaraRulePath() string {
+	if x != nil {
+		return x.YaraRulePath
+	}
+	return ""
+}
+
 type ScanResult struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	JobId         string                 `protobuf:"bytes,1,opt,name=job_id,json=jobId,proto3" json:"job_id,omitempty"`
@@ -176,6 +184,7 @@ type ScanResult struct {
 	FilesScanned  int64                  `protobuf:"varint,3,opt,name=files_scanned,json=filesScanned,proto3" json:"files_scanned,omitempty"`
 	Matches       []*FoundItem           `protobuf:"bytes,4,rep,name=matches,proto3" json:"matches,omitempty"`
 	ErrorMessage  string                 `protobuf:"bytes,5,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	YaraMatches   []*YaraMatch           `protobuf:"bytes,6,rep,name=yara_matches,json=yaraMatches,proto3" json:"yara_matches,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -245,6 +254,73 @@ func (x *ScanResult) GetErrorMessage() string {
 	return ""
 }
 
+func (x *ScanResult) GetYaraMatches() []*YaraMatch {
+	if x != nil {
+		return x.YaraMatches
+	}
+	return nil
+}
+
+type YaraMatch struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FilePath      string                 `protobuf:"bytes,1,opt,name=file_path,json=filePath,proto3" json:"file_path,omitempty"`
+	RuleName      string                 `protobuf:"bytes,2,opt,name=rule_name,json=ruleName,proto3" json:"rule_name,omitempty"`
+	Tags          []string               `protobuf:"bytes,3,rep,name=tags,proto3" json:"tags,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *YaraMatch) Reset() {
+	*x = YaraMatch{}
+	mi := &file_engine_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *YaraMatch) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*YaraMatch) ProtoMessage() {}
+
+func (x *YaraMatch) ProtoReflect() protoreflect.Message {
+	mi := &file_engine_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use YaraMatch.ProtoReflect.Descriptor instead.
+func (*YaraMatch) Descriptor() ([]byte, []int) {
+	return file_engine_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *YaraMatch) GetFilePath() string {
+	if x != nil {
+		return x.FilePath
+	}
+	return ""
+}
+
+func (x *YaraMatch) GetRuleName() string {
+	if x != nil {
+		return x.RuleName
+	}
+	return ""
+}
+
+func (x *YaraMatch) GetTags() []string {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
+}
+
 type FoundItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FilePath      string                 `protobuf:"bytes,1,opt,name=file_path,json=filePath,proto3" json:"file_path,omitempty"`
@@ -256,7 +332,7 @@ type FoundItem struct {
 
 func (x *FoundItem) Reset() {
 	*x = FoundItem{}
-	mi := &file_engine_proto_msgTypes[4]
+	mi := &file_engine_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -268,7 +344,7 @@ func (x *FoundItem) String() string {
 func (*FoundItem) ProtoMessage() {}
 
 func (x *FoundItem) ProtoReflect() protoreflect.Message {
-	mi := &file_engine_proto_msgTypes[4]
+	mi := &file_engine_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -281,7 +357,7 @@ func (x *FoundItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FoundItem.ProtoReflect.Descriptor instead.
 func (*FoundItem) Descriptor() ([]byte, []int) {
-	return file_engine_proto_rawDescGZIP(), []int{4}
+	return file_engine_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *FoundItem) GetFilePath() string {
@@ -316,7 +392,7 @@ type CarveRequest struct {
 
 func (x *CarveRequest) Reset() {
 	*x = CarveRequest{}
-	mi := &file_engine_proto_msgTypes[5]
+	mi := &file_engine_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -328,7 +404,7 @@ func (x *CarveRequest) String() string {
 func (*CarveRequest) ProtoMessage() {}
 
 func (x *CarveRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_engine_proto_msgTypes[5]
+	mi := &file_engine_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -341,7 +417,7 @@ func (x *CarveRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CarveRequest.ProtoReflect.Descriptor instead.
 func (*CarveRequest) Descriptor() ([]byte, []int) {
-	return file_engine_proto_rawDescGZIP(), []int{5}
+	return file_engine_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CarveRequest) GetSourcePath() string {
@@ -377,7 +453,7 @@ type CarveResult struct {
 
 func (x *CarveResult) Reset() {
 	*x = CarveResult{}
-	mi := &file_engine_proto_msgTypes[6]
+	mi := &file_engine_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -389,7 +465,7 @@ func (x *CarveResult) String() string {
 func (*CarveResult) ProtoMessage() {}
 
 func (x *CarveResult) ProtoReflect() protoreflect.Message {
-	mi := &file_engine_proto_msgTypes[6]
+	mi := &file_engine_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -402,7 +478,7 @@ func (x *CarveResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CarveResult.ProtoReflect.Descriptor instead.
 func (*CarveResult) Descriptor() ([]byte, []int) {
-	return file_engine_proto_rawDescGZIP(), []int{6}
+	return file_engine_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *CarveResult) GetJobId() string {
@@ -443,7 +519,7 @@ type HashRequest struct {
 
 func (x *HashRequest) Reset() {
 	*x = HashRequest{}
-	mi := &file_engine_proto_msgTypes[7]
+	mi := &file_engine_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -455,7 +531,7 @@ func (x *HashRequest) String() string {
 func (*HashRequest) ProtoMessage() {}
 
 func (x *HashRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_engine_proto_msgTypes[7]
+	mi := &file_engine_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -468,7 +544,7 @@ func (x *HashRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HashRequest.ProtoReflect.Descriptor instead.
 func (*HashRequest) Descriptor() ([]byte, []int) {
-	return file_engine_proto_rawDescGZIP(), []int{7}
+	return file_engine_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *HashRequest) GetFilePath() string {
@@ -495,7 +571,7 @@ type HashResult struct {
 
 func (x *HashResult) Reset() {
 	*x = HashResult{}
-	mi := &file_engine_proto_msgTypes[8]
+	mi := &file_engine_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -507,7 +583,7 @@ func (x *HashResult) String() string {
 func (*HashResult) ProtoMessage() {}
 
 func (x *HashResult) ProtoReflect() protoreflect.Message {
-	mi := &file_engine_proto_msgTypes[8]
+	mi := &file_engine_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -520,7 +596,7 @@ func (x *HashResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HashResult.ProtoReflect.Descriptor instead.
 func (*HashResult) Descriptor() ([]byte, []int) {
-	return file_engine_proto_rawDescGZIP(), []int{8}
+	return file_engine_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *HashResult) GetFilePath() string {
@@ -546,7 +622,7 @@ type WalkRequest struct {
 
 func (x *WalkRequest) Reset() {
 	*x = WalkRequest{}
-	mi := &file_engine_proto_msgTypes[9]
+	mi := &file_engine_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -558,7 +634,7 @@ func (x *WalkRequest) String() string {
 func (*WalkRequest) ProtoMessage() {}
 
 func (x *WalkRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_engine_proto_msgTypes[9]
+	mi := &file_engine_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -571,7 +647,7 @@ func (x *WalkRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WalkRequest.ProtoReflect.Descriptor instead.
 func (*WalkRequest) Descriptor() ([]byte, []int) {
-	return file_engine_proto_rawDescGZIP(), []int{9}
+	return file_engine_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *WalkRequest) GetRootPath() string {
@@ -596,7 +672,7 @@ type WalkEntry struct {
 
 func (x *WalkEntry) Reset() {
 	*x = WalkEntry{}
-	mi := &file_engine_proto_msgTypes[10]
+	mi := &file_engine_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -608,7 +684,7 @@ func (x *WalkEntry) String() string {
 func (*WalkEntry) ProtoMessage() {}
 
 func (x *WalkEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_engine_proto_msgTypes[10]
+	mi := &file_engine_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -621,7 +697,7 @@ func (x *WalkEntry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WalkEntry.ProtoReflect.Descriptor instead.
 func (*WalkEntry) Descriptor() ([]byte, []int) {
-	return file_engine_proto_rawDescGZIP(), []int{10}
+	return file_engine_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *WalkEntry) GetPath() string {
@@ -681,21 +757,27 @@ const file_engine_proto_rawDesc = "" +
 	"\x05Empty\"<\n" +
 	"\x04Pong\x12\x16\n" +
 	"\x06status\x18\x01 \x01(\tR\x06status\x12\x1c\n" +
-	"\ttimestamp\x18\x02 \x01(\x03R\ttimestamp\"k\n" +
+	"\ttimestamp\x18\x02 \x01(\x03R\ttimestamp\"\x91\x01\n" +
 	"\vScanRequest\x12\x1f\n" +
 	"\vsource_path\x18\x01 \x01(\tR\n" +
 	"sourcePath\x12\x1b\n" +
 	"\tscan_type\x18\x02 \x01(\tR\bscanType\x12\x1e\n" +
 	"\n" +
 	"signatures\x18\x03 \x03(\tR\n" +
-	"signatures\"\xb4\x01\n" +
+	"signatures\x12$\n" +
+	"\x0eyara_rule_path\x18\x04 \x01(\tR\fyaraRulePath\"\xea\x01\n" +
 	"\n" +
 	"ScanResult\x12\x15\n" +
 	"\x06job_id\x18\x01 \x01(\tR\x05jobId\x12\x18\n" +
 	"\asuccess\x18\x02 \x01(\bR\asuccess\x12#\n" +
 	"\rfiles_scanned\x18\x03 \x01(\x03R\ffilesScanned\x12+\n" +
 	"\amatches\x18\x04 \x03(\v2\x11.engine.FoundItemR\amatches\x12#\n" +
-	"\rerror_message\x18\x05 \x01(\tR\ferrorMessage\"g\n" +
+	"\rerror_message\x18\x05 \x01(\tR\ferrorMessage\x124\n" +
+	"\fyara_matches\x18\x06 \x03(\v2\x11.engine.YaraMatchR\vyaraMatches\"Y\n" +
+	"\tYaraMatch\x12\x1b\n" +
+	"\tfile_path\x18\x01 \x01(\tR\bfilePath\x12\x1b\n" +
+	"\trule_name\x18\x02 \x01(\tR\bruleName\x12\x12\n" +
+	"\x04tags\x18\x03 \x03(\tR\x04tags\"g\n" +
 	"\tFoundItem\x12\x1b\n" +
 	"\tfile_path\x18\x01 \x01(\tR\bfilePath\x12%\n" +
 	"\x0esignature_name\x18\x02 \x01(\tR\rsignatureName\x12\x16\n" +
@@ -753,39 +835,41 @@ func file_engine_proto_rawDescGZIP() []byte {
 	return file_engine_proto_rawDescData
 }
 
-var file_engine_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_engine_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_engine_proto_goTypes = []any{
 	(*Empty)(nil),        // 0: engine.Empty
 	(*Pong)(nil),         // 1: engine.Pong
 	(*ScanRequest)(nil),  // 2: engine.ScanRequest
 	(*ScanResult)(nil),   // 3: engine.ScanResult
-	(*FoundItem)(nil),    // 4: engine.FoundItem
-	(*CarveRequest)(nil), // 5: engine.CarveRequest
-	(*CarveResult)(nil),  // 6: engine.CarveResult
-	(*HashRequest)(nil),  // 7: engine.HashRequest
-	(*HashResult)(nil),   // 8: engine.HashResult
-	(*WalkRequest)(nil),  // 9: engine.WalkRequest
-	(*WalkEntry)(nil),    // 10: engine.WalkEntry
-	nil,                  // 11: engine.HashResult.HashesEntry
+	(*YaraMatch)(nil),    // 4: engine.YaraMatch
+	(*FoundItem)(nil),    // 5: engine.FoundItem
+	(*CarveRequest)(nil), // 6: engine.CarveRequest
+	(*CarveResult)(nil),  // 7: engine.CarveResult
+	(*HashRequest)(nil),  // 8: engine.HashRequest
+	(*HashResult)(nil),   // 9: engine.HashResult
+	(*WalkRequest)(nil),  // 10: engine.WalkRequest
+	(*WalkEntry)(nil),    // 11: engine.WalkEntry
+	nil,                  // 12: engine.HashResult.HashesEntry
 }
 var file_engine_proto_depIdxs = []int32{
-	4,  // 0: engine.ScanResult.matches:type_name -> engine.FoundItem
-	11, // 1: engine.HashResult.hashes:type_name -> engine.HashResult.HashesEntry
-	2,  // 2: engine.EngineService.Scan:input_type -> engine.ScanRequest
-	5,  // 3: engine.EngineService.Carve:input_type -> engine.CarveRequest
-	7,  // 4: engine.EngineService.Hash:input_type -> engine.HashRequest
-	0,  // 5: engine.EngineService.Ping:input_type -> engine.Empty
-	9,  // 6: engine.EngineService.Walk:input_type -> engine.WalkRequest
-	3,  // 7: engine.EngineService.Scan:output_type -> engine.ScanResult
-	6,  // 8: engine.EngineService.Carve:output_type -> engine.CarveResult
-	8,  // 9: engine.EngineService.Hash:output_type -> engine.HashResult
-	1,  // 10: engine.EngineService.Ping:output_type -> engine.Pong
-	10, // 11: engine.EngineService.Walk:output_type -> engine.WalkEntry
-	7,  // [7:12] is the sub-list for method output_type
-	2,  // [2:7] is the sub-list for method input_type
-	2,  // [2:2] is the sub-list for extension type_name
-	2,  // [2:2] is the sub-list for extension extendee
-	0,  // [0:2] is the sub-list for field type_name
+	5,  // 0: engine.ScanResult.matches:type_name -> engine.FoundItem
+	4,  // 1: engine.ScanResult.yara_matches:type_name -> engine.YaraMatch
+	12, // 2: engine.HashResult.hashes:type_name -> engine.HashResult.HashesEntry
+	2,  // 3: engine.EngineService.Scan:input_type -> engine.ScanRequest
+	6,  // 4: engine.EngineService.Carve:input_type -> engine.CarveRequest
+	8,  // 5: engine.EngineService.Hash:input_type -> engine.HashRequest
+	0,  // 6: engine.EngineService.Ping:input_type -> engine.Empty
+	10, // 7: engine.EngineService.Walk:input_type -> engine.WalkRequest
+	3,  // 8: engine.EngineService.Scan:output_type -> engine.ScanResult
+	7,  // 9: engine.EngineService.Carve:output_type -> engine.CarveResult
+	9,  // 10: engine.EngineService.Hash:output_type -> engine.HashResult
+	1,  // 11: engine.EngineService.Ping:output_type -> engine.Pong
+	11, // 12: engine.EngineService.Walk:output_type -> engine.WalkEntry
+	8,  // [8:13] is the sub-list for method output_type
+	3,  // [3:8] is the sub-list for method input_type
+	3,  // [3:3] is the sub-list for extension type_name
+	3,  // [3:3] is the sub-list for extension extendee
+	0,  // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_engine_proto_init() }
@@ -799,7 +883,7 @@ func file_engine_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_engine_proto_rawDesc), len(file_engine_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -13,6 +13,11 @@ sys.path.append(os.getcwd())
 
 from orchestrator.client import EngineClient
 from reporting.generator import ReportGenerator
+from timeline.builder import TimelineBuilder
+import glob
+from artifacts.registry import RegistryRunKeys
+from artifacts.browser import ChromeHistoryParser
+from artifacts.evtx import EvtxParser
 
 app = typer.Typer(
     name="forenscope",
@@ -35,6 +40,7 @@ def scan(
     fast: bool = typer.Option(False, "--fast", help="Enable fast mode (skip deep signature scan)"),
     engine_addr: str = typer.Option("localhost:50051", "--addr", help="Address of Go Engine"),
     report: bool = typer.Option(False, "--report", "-r", help="Generate HTML & JSON reports"),
+    intel: bool = typer.Option(False, "--intel", "-I", help="Run Forensic Intelligence parsers (Registry, Browser, Logs)"),
 ):
     """
     Start a forensic scan on a target image (Signature Analysis).
@@ -62,6 +68,68 @@ def scan(
         
         progress.update(task, description="[cyan]Scanning file system...[/cyan]")
         result = client.scan(image, scan_type="quick" if fast else "full")
+
+    # Forensic Intelligence Layer
+    if intel:
+        console.print("\n[bold yellow]🧠 Running Forensic Intelligence Modules[/bold yellow]")
+        
+        # 1. Registry Analysis
+        console.print("[bold white]1️⃣  Registry Analysis (Persistence)[/bold white]")
+        # Search for NTUSER.DAT and SOFTWARE hives
+        hives = []
+        if os.path.isdir(image):
+            hives.extend(glob.glob(os.path.join(image, "**", "NTUSER.DAT"), recursive=True))
+            hives.extend(glob.glob(os.path.join(image, "**", "config", "SOFTWARE"), recursive=True))
+            
+        for hive in hives:
+            try:
+                parser = RegistryRunKeys(hive)
+                evidence = parser.extract()
+                if evidence:
+                    console.print(f"   📂 Hive: [dim]{hive}[/dim]")
+                    for e in evidence:
+                        console.print(f"      [red]Run Key:[/red] {e.data.get('value_name')} = {e.data.get('value_data')[:50]}...")
+            except Exception as e:
+                pass
+
+        # 2. Browser Forensics
+        console.print("\n[bold white]2️⃣  Browser Forensics (History)[/bold white]")
+        history_files = []
+        if os.path.isdir(image):
+            # Chrome/Edge History
+            history_files.extend(glob.glob(os.path.join(image, "**", "User Data", "*", "History"), recursive=True))
+            
+        for h_file in history_files:
+            try:
+                parser = ChromeHistoryParser(h_file)
+                evidence = parser.extract()
+                if evidence:
+                     console.print(f"   🌐 Profile: [dim]{h_file}[/dim]")
+                     console.print(f"      Found {len(evidence)} history entries.")
+                     # Show last 3
+                     for e in evidence[-3:]:
+                         console.print(f"      [cyan]{e.timestamp}[/cyan] {e.data.get('url')[:60]}")
+            except Exception:
+                pass
+
+        # 3. Event Logs
+        console.print("\n[bold white]3️⃣  Windows Event Logs (Logon)[/bold white]")
+        evtx_files = []
+        if os.path.isdir(image):
+            evtx_files.extend(glob.glob(os.path.join(image, "**", "winevt", "Logs", "*.evtx"), recursive=True))
+            
+        for evtx in evtx_files:
+            # Only care about Security.evtx for now
+            if "Security.evtx" in evtx:
+                try:
+                    parser = EvtxParser(evtx)
+                    evidence = parser.extract()
+                    if evidence:
+                        console.print(f"   🛡️  Log: [dim]{evtx}[/dim]")
+                        console.print(f"      Found {len(evidence)} Logon events (4624/4625).")
+                except Exception:
+                    pass
+        print()
 
     if result.success:
         console.print("[bold green]✅ Scan Complete Successfully![/bold green]")
@@ -91,6 +159,20 @@ def scan(
             console.print(res_table)
         else:
             console.print("[green]✅ No specific threat signatures matched.[/green]")
+
+        # YARA Table logic
+        if hasattr(result, "yara_matches") and len(result.yara_matches) > 0:
+             console.print("\n[bold red]🦠 Detected Malware / YARA Matches:[/bold red]")
+             yara_table = Table(show_header=True, header_style="bold red")
+             yara_table.add_column("Rule Name", style="magenta")
+             yara_table.add_column("Tags", style="cyan")
+             yara_table.add_column("File Path", style="white")
+
+             for item in result.yara_matches:
+                 tags = ", ".join(item.tags)
+                 yara_table.add_row(item.rule_name, tags, item.file_path)
+             
+             console.print(yara_table)
 
         # Report Generation
         if report:
@@ -191,6 +273,46 @@ def hash(
         console.print(table)
     else:
         console.print("[bold red]❌ Hashing Failed![/bold red]")
+
+@app.command()
+def timeline(
+    image: str = typer.Option(..., "--image", "-i", help="Path to disk image or source"),
+    format: str = typer.Option("csv", "--format", help="Output format (csv/json)"),
+    engine_addr: str = typer.Option("localhost:50051", "--addr", help="Address of Go Engine"),
+):
+    """
+    Generate a file system timeline from the target.
+    """
+    print_banner()
+    console.print("[bold yellow]📅 Generating Timeline[/bold yellow]")
+    console.print(f"   Target: [blue]{image}[/blue]")
+    console.print(f"   Format: [blue]{format}[/blue]")
+    print()
+    
+    client = EngineClient(target=engine_addr)
+    # Get generator (lazy)
+    stream = client.walk(image) 
+    
+    if stream:
+        builder = TimelineBuilder(output_dir="timelines")
+        job_id = f"timeline_{int(time.time())}"
+        
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            transient=True,
+        ) as progress:
+            progress.add_task(description="[cyan]Streaming & Building Timeline...[/cyan]", total=None)
+             
+            if format.lower() == "json":
+                path = builder.build_json(stream, job_id)
+            else:
+                path = builder.build_csv(stream, job_id)
+                 
+        console.print("[bold green]✅ Timeline Generated![/bold green]")
+        console.print(f"   Output: [link={path}]{path}[/link]")
+    else:
+        console.print("[bold red]❌ Timeline Generation Failed![/bold red]")
 
 @app.command()
 def ping(

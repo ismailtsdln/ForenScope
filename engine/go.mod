@@ -3,6 +3,7 @@ module github.com/ismailtsdln/forenscope/engine
 go 1.25.5
 
 require (
+	github.com/hillu/go-yara/v4 v4.3.4
 	google.golang.org/grpc v1.78.0
 	google.golang.org/protobuf v1.36.11
 )

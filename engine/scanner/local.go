@@ -16,14 +16,15 @@ import (
 
 // Scanner handles file system scanning logic.
 type Scanner struct {
-	pool *worker.Pool
+	pool        *worker.Pool
+	yaraScanner *YaraScanner
 }
 
-// NewScanner creates a new Scanner with a worker pool.
-func NewScanner(workerCount int) *Scanner {
+// NewScanner creates a new Scanner with a worker pool and optional YARA scanner.
+func NewScanner(workerCount int, y *YaraScanner) *Scanner {
 	pool := worker.NewPool(workerCount)
 	pool.Start()
-	return &Scanner{pool: pool}
+	return &Scanner{pool: pool, yaraScanner: y}
 }
 
 // Close stops the scanner and its workers.
@@ -67,6 +68,7 @@ func (s *Scanner) ScanDir(root string) (*pb.ScanResult, error) {
 	var fileCount int64 = 0
 	var mu sync.Mutex
 	var foundItems []*pb.FoundItem
+	var yaraMatches []*pb.YaraMatch
 
 	// We use a WaitGroup to wait for all submitted tasks to finish
 	var wg sync.WaitGroup
@@ -85,7 +87,7 @@ func (s *Scanner) ScanDir(root string) (*pb.ScanResult, error) {
 			s.pool.Submit(func(ctx context.Context) error {
 				defer wg.Done()
 
-				// Open file to check signature
+				// 1. Signature Scan (Magic Bytes)
 				f, err := os.Open(path)
 				if err != nil {
 					return err
@@ -99,16 +101,30 @@ func (s *Scanner) ScanDir(root string) (*pb.ScanResult, error) {
 					return err
 				}
 
-				sigName := MatchSignature(buf)
-				if sigName != "" {
+				sig := MatchSignature(buf)
+				if sig != nil {
 					mu.Lock()
 					foundItems = append(foundItems, &pb.FoundItem{
 						FilePath:      path,
-						SignatureName: sigName,
+						SignatureName: sig.Name, // Using Name from returned struct
 						Offset:        0,
 					})
 					mu.Unlock()
 				}
+
+				// 2. YARA Scan (If Enabled)
+				if s.yaraScanner != nil && s.yaraScanner.Enabled() {
+					// Note: YARA scan might be heavy, running inside worker is good.
+					// However, go-yara might require thread safety or lock?
+					// Usually ScanFile is thread-safe if Rules are used (not Compiler).
+					matches, err := s.yaraScanner.ScanFile(path)
+					if err == nil && len(matches) > 0 {
+						mu.Lock()
+						yaraMatches = append(yaraMatches, matches...)
+						mu.Unlock()
+					}
+				}
+
 				return nil
 			})
 		}
@@ -130,5 +146,6 @@ func (s *Scanner) ScanDir(root string) (*pb.ScanResult, error) {
 		Success:      true,
 		FilesScanned: fileCount,
 		Matches:      foundItems,
+		YaraMatches:  yaraMatches,
 	}, nil
 }

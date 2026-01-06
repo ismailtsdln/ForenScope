@@ -155,6 +155,44 @@ def carve(
         console.print(f"Error: {result.error_message}")
 
 @app.command()
+def hash(
+    file: str = typer.Option(..., "--file", "-f", help="Path to file to hash"),
+    engine_addr: str = typer.Option("localhost:50051", "--addr", help="Address of Go Engine"),
+):
+    """
+    Calculate SHA256/MD5 hashes of a file.
+    """
+    print_banner()
+    console.print("[bold yellow]🔢 Calculating File Hashes[/bold yellow]")
+    console.print(f"   File: [blue]{file}[/blue]")
+    print()
+    
+    client = EngineClient(target=engine_addr)
+    
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        transient=True,
+    ) as progress:
+        progress.add_task(description="[cyan]Streaming file content...[/cyan]", total=None)
+        # Defaulting to both algorithms
+        result = client.hash_file(file, algorithms=["md5", "sha256"])
+        
+    if result:
+        console.print("[bold green]✅ Hashing Complete![/bold green]")
+        
+        table = Table(show_header=True, header_style="bold magenta")
+        table.add_column("Algorithm", style="cyan")
+        table.add_column("Hash Value", style="green")
+        
+        for algo, val in result.hashes.items():
+            table.add_row(algo.upper(), val)
+            
+        console.print(table)
+    else:
+        console.print("[bold red]❌ Hashing Failed![/bold red]")
+
+@app.command()
 def ping(
     engine_addr: str = typer.Option("localhost:50051", "--addr", help="Address of Go Engine"),
 ):

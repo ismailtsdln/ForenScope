@@ -23,6 +23,7 @@ const (
 	EngineService_Carve_FullMethodName = "/engine.EngineService/Carve"
 	EngineService_Hash_FullMethodName  = "/engine.EngineService/Hash"
 	EngineService_Ping_FullMethodName  = "/engine.EngineService/Ping"
+	EngineService_Walk_FullMethodName  = "/engine.EngineService/Walk"
 )
 
 // EngineServiceClient is the client API for EngineService service.
@@ -37,6 +38,8 @@ type EngineServiceClient interface {
 	Hash(ctx context.Context, in *HashRequest, opts ...grpc.CallOption) (*HashResult, error)
 	// Checks the health/status of the engine
 	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error)
+	// Walks a directory and streams all file metadata (for Timeline)
+	Walk(ctx context.Context, in *WalkRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WalkEntry], error)
 }
 
 type engineServiceClient struct {
@@ -87,6 +90,25 @@ func (c *engineServiceClient) Ping(ctx context.Context, in *Empty, opts ...grpc.
 	return out, nil
 }
 
+func (c *engineServiceClient) Walk(ctx context.Context, in *WalkRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[WalkEntry], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &EngineService_ServiceDesc.Streams[0], EngineService_Walk_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[WalkRequest, WalkEntry]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type EngineService_WalkClient = grpc.ServerStreamingClient[WalkEntry]
+
 // EngineServiceServer is the server API for EngineService service.
 // All implementations must embed UnimplementedEngineServiceServer
 // for forward compatibility.
@@ -99,6 +121,8 @@ type EngineServiceServer interface {
 	Hash(context.Context, *HashRequest) (*HashResult, error)
 	// Checks the health/status of the engine
 	Ping(context.Context, *Empty) (*Pong, error)
+	// Walks a directory and streams all file metadata (for Timeline)
+	Walk(*WalkRequest, grpc.ServerStreamingServer[WalkEntry]) error
 	mustEmbedUnimplementedEngineServiceServer()
 }
 
@@ -120,6 +144,9 @@ func (UnimplementedEngineServiceServer) Hash(context.Context, *HashRequest) (*Ha
 }
 func (UnimplementedEngineServiceServer) Ping(context.Context, *Empty) (*Pong, error) {
 	return nil, status.Error(codes.Unimplemented, "method Ping not implemented")
+}
+func (UnimplementedEngineServiceServer) Walk(*WalkRequest, grpc.ServerStreamingServer[WalkEntry]) error {
+	return status.Error(codes.Unimplemented, "method Walk not implemented")
 }
 func (UnimplementedEngineServiceServer) mustEmbedUnimplementedEngineServiceServer() {}
 func (UnimplementedEngineServiceServer) testEmbeddedByValue()                       {}
@@ -214,6 +241,17 @@ func _EngineService_Ping_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EngineService_Walk_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(WalkRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(EngineServiceServer).Walk(m, &grpc.GenericServerStream[WalkRequest, WalkEntry]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type EngineService_WalkServer = grpc.ServerStreamingServer[WalkEntry]
+
 // EngineService_ServiceDesc is the grpc.ServiceDesc for EngineService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -238,6 +276,12 @@ var EngineService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _EngineService_Ping_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "Walk",
+			Handler:       _EngineService_Walk_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "engine.proto",
 }

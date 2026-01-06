@@ -53,6 +53,35 @@ class EngineClient:
             res.error_message = str(e)
             return res
 
+    def hash_file(self, path: str, algorithms: list[str] = None) -> engine_pb2.HashResult:
+        """
+        Trigger a file hash calculation on the Go engine.
+        """
+        if algorithms is None:
+            algorithms = ["sha256"]
+            
+        request = engine_pb2.HashRequest(
+            file_path=path,
+            algorithms=algorithms
+        )
+        try:
+            logging.info(f"Sending Hash request for {path}")
+            return self.stub.Hash(request)
+        except grpc.RpcError as e:
+            logging.error(f"RPC failed: {e}")
+            return None
+
+    def walk(self, path: str):
+        """
+        Stream file metadata from the Go engine (Generator).
+        """
+        request = engine_pb2.WalkRequest(root_path=path)
+        try:
+            return self.stub.Walk(request)
+        except grpc.RpcError as e:
+            logging.error(f"Walk failed: {e}")
+            return None
+
     def ping(self):
         try:
             return self.stub.Ping(engine_pb2.Empty())

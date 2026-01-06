@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  # The unified container running the API (Orchestrator) and Engine
+  # In a microservices setup, we might split them. Here we run them together or as separate services from same image.
+  
+  engine:
+    build: .
+    container_name: forenscope-engine
+    command: ./bin/engine
+    ports:
+      - "50051:50051"
+    volumes:
+      - ./data:/data # Mount evidence here
+    restart: unless-stopped
+
+  api:
+    build: .
+    container_name: forenscope-api
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    environment:
+      - ENGINE_ADDR=engine:50051
+    depends_on:
+      - engine
+    volumes:
+      - ./data:/data
+      - ./reports:/app/reports
+    restart: unless-stopped

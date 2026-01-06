@@ -15,6 +15,7 @@ import (
 	"google.golang.org/grpc/reflection"
 
 	"github.com/ismailtsdln/forenscope/engine/carver"
+	"github.com/ismailtsdln/forenscope/engine/hasher"
 	pb "github.com/ismailtsdln/forenscope/engine/proto"
 	"github.com/ismailtsdln/forenscope/engine/scanner"
 )
@@ -40,12 +41,13 @@ func (s *server) Carve(ctx context.Context, req *pb.CarveRequest) (*pb.CarveResu
 }
 
 func (s *server) Hash(ctx context.Context, req *pb.HashRequest) (*pb.HashResult, error) {
-	// TODO: Implement actual hashing logic
-	log.Printf("Received hash request for: %v", req.FilePath)
-	return &pb.HashResult{
-		FilePath: req.FilePath,
-		Hashes:   map[string]string{"sha256": "mock_hash_1234"},
-	}, nil
+	log.Printf("Received hash request for: %v (Algos: %v)", req.FilePath, req.Algorithms)
+	return hasher.CalculateHashes(req.FilePath, req.Algorithms)
+}
+
+func (s *server) Walk(req *pb.WalkRequest, stream pb.EngineService_WalkServer) error {
+	log.Printf("Received walk request for: %v", req.RootPath)
+	return s.scanner.StreamWalk(req.RootPath, stream)
 }
 
 func (s *server) Ping(ctx context.Context, req *pb.Empty) (*pb.Pong, error) {

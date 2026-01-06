@@ -34,6 +34,11 @@ class EngineServiceStub(object):
                 request_serializer=engine__pb2.Empty.SerializeToString,
                 response_deserializer=engine__pb2.Pong.FromString,
                 )
+        self.Walk = channel.unary_stream(
+                '/engine.EngineService/Walk',
+                request_serializer=engine__pb2.WalkRequest.SerializeToString,
+                response_deserializer=engine__pb2.WalkEntry.FromString,
+                )
 
 
 class EngineServiceServicer(object):
@@ -67,6 +72,13 @@ class EngineServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Walk(self, request, context):
+        """Walks a directory and streams all file metadata (for Timeline)
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_EngineServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -89,6 +101,11 @@ def add_EngineServiceServicer_to_server(servicer, server):
                     servicer.Ping,
                     request_deserializer=engine__pb2.Empty.FromString,
                     response_serializer=engine__pb2.Pong.SerializeToString,
+            ),
+            'Walk': grpc.unary_stream_rpc_method_handler(
+                    servicer.Walk,
+                    request_deserializer=engine__pb2.WalkRequest.FromString,
+                    response_serializer=engine__pb2.WalkEntry.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -165,5 +182,22 @@ class EngineService(object):
         return grpc.experimental.unary_unary(request, target, '/engine.EngineService/Ping',
             engine__pb2.Empty.SerializeToString,
             engine__pb2.Pong.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Walk(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(request, target, '/engine.EngineService/Walk',
+            engine__pb2.WalkRequest.SerializeToString,
+            engine__pb2.WalkEntry.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

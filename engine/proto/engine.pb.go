@@ -537,6 +537,142 @@ func (x *HashResult) GetHashes() map[string]string {
 	return nil
 }
 
+type WalkRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RootPath      string                 `protobuf:"bytes,1,opt,name=root_path,json=rootPath,proto3" json:"root_path,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WalkRequest) Reset() {
+	*x = WalkRequest{}
+	mi := &file_engine_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WalkRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WalkRequest) ProtoMessage() {}
+
+func (x *WalkRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_engine_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WalkRequest.ProtoReflect.Descriptor instead.
+func (*WalkRequest) Descriptor() ([]byte, []int) {
+	return file_engine_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *WalkRequest) GetRootPath() string {
+	if x != nil {
+		return x.RootPath
+	}
+	return ""
+}
+
+type WalkEntry struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Path          string                 `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
+	Size          int64                  `protobuf:"varint,2,opt,name=size,proto3" json:"size,omitempty"`
+	Mode          int64                  `protobuf:"varint,3,opt,name=mode,proto3" json:"mode,omitempty"`
+	ModifiedTime  int64                  `protobuf:"varint,4,opt,name=modified_time,json=modifiedTime,proto3" json:"modified_time,omitempty"`
+	AccessedTime  int64                  `protobuf:"varint,5,opt,name=accessed_time,json=accessedTime,proto3" json:"accessed_time,omitempty"` // Might not be available on all OS
+	CreatedTime   int64                  `protobuf:"varint,6,opt,name=created_time,json=createdTime,proto3" json:"created_time,omitempty"`    // Might not be available on all OS
+	IsDir         bool                   `protobuf:"varint,7,opt,name=is_dir,json=isDir,proto3" json:"is_dir,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *WalkEntry) Reset() {
+	*x = WalkEntry{}
+	mi := &file_engine_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *WalkEntry) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*WalkEntry) ProtoMessage() {}
+
+func (x *WalkEntry) ProtoReflect() protoreflect.Message {
+	mi := &file_engine_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use WalkEntry.ProtoReflect.Descriptor instead.
+func (*WalkEntry) Descriptor() ([]byte, []int) {
+	return file_engine_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *WalkEntry) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+func (x *WalkEntry) GetSize() int64 {
+	if x != nil {
+		return x.Size
+	}
+	return 0
+}
+
+func (x *WalkEntry) GetMode() int64 {
+	if x != nil {
+		return x.Mode
+	}
+	return 0
+}
+
+func (x *WalkEntry) GetModifiedTime() int64 {
+	if x != nil {
+		return x.ModifiedTime
+	}
+	return 0
+}
+
+func (x *WalkEntry) GetAccessedTime() int64 {
+	if x != nil {
+		return x.AccessedTime
+	}
+	return 0
+}
+
+func (x *WalkEntry) GetCreatedTime() int64 {
+	if x != nil {
+		return x.CreatedTime
+	}
+	return 0
+}
+
+func (x *WalkEntry) GetIsDir() bool {
+	if x != nil {
+		return x.IsDir
+	}
+	return false
+}
+
 var File_engine_proto protoreflect.FileDescriptor
 
 const file_engine_proto_rawDesc = "" +
@@ -587,12 +723,23 @@ const file_engine_proto_rawDesc = "" +
 	"\x06hashes\x18\x02 \x03(\v2\x1e.engine.HashResult.HashesEntryR\x06hashes\x1a9\n" +
 	"\vHashesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x012\xca\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"*\n" +
+	"\vWalkRequest\x12\x1b\n" +
+	"\troot_path\x18\x01 \x01(\tR\brootPath\"\xcb\x01\n" +
+	"\tWalkEntry\x12\x12\n" +
+	"\x04path\x18\x01 \x01(\tR\x04path\x12\x12\n" +
+	"\x04size\x18\x02 \x01(\x03R\x04size\x12\x12\n" +
+	"\x04mode\x18\x03 \x01(\x03R\x04mode\x12#\n" +
+	"\rmodified_time\x18\x04 \x01(\x03R\fmodifiedTime\x12#\n" +
+	"\raccessed_time\x18\x05 \x01(\x03R\faccessedTime\x12!\n" +
+	"\fcreated_time\x18\x06 \x01(\x03R\vcreatedTime\x12\x15\n" +
+	"\x06is_dir\x18\a \x01(\bR\x05isDir2\xfc\x01\n" +
 	"\rEngineService\x12/\n" +
 	"\x04Scan\x12\x13.engine.ScanRequest\x1a\x12.engine.ScanResult\x122\n" +
 	"\x05Carve\x12\x14.engine.CarveRequest\x1a\x13.engine.CarveResult\x12/\n" +
 	"\x04Hash\x12\x13.engine.HashRequest\x1a\x12.engine.HashResult\x12#\n" +
-	"\x04Ping\x12\r.engine.Empty\x1a\f.engine.PongB0Z.github.com/ismailtsdln/forenscope/engine/protob\x06proto3"
+	"\x04Ping\x12\r.engine.Empty\x1a\f.engine.Pong\x120\n" +
+	"\x04Walk\x12\x13.engine.WalkRequest\x1a\x11.engine.WalkEntry0\x01B0Z.github.com/ismailtsdln/forenscope/engine/protob\x06proto3"
 
 var (
 	file_engine_proto_rawDescOnce sync.Once
@@ -606,7 +753,7 @@ func file_engine_proto_rawDescGZIP() []byte {
 	return file_engine_proto_rawDescData
 }
 
-var file_engine_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_engine_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_engine_proto_goTypes = []any{
 	(*Empty)(nil),        // 0: engine.Empty
 	(*Pong)(nil),         // 1: engine.Pong
@@ -617,24 +764,28 @@ var file_engine_proto_goTypes = []any{
 	(*CarveResult)(nil),  // 6: engine.CarveResult
 	(*HashRequest)(nil),  // 7: engine.HashRequest
 	(*HashResult)(nil),   // 8: engine.HashResult
-	nil,                  // 9: engine.HashResult.HashesEntry
+	(*WalkRequest)(nil),  // 9: engine.WalkRequest
+	(*WalkEntry)(nil),    // 10: engine.WalkEntry
+	nil,                  // 11: engine.HashResult.HashesEntry
 }
 var file_engine_proto_depIdxs = []int32{
-	4, // 0: engine.ScanResult.matches:type_name -> engine.FoundItem
-	9, // 1: engine.HashResult.hashes:type_name -> engine.HashResult.HashesEntry
-	2, // 2: engine.EngineService.Scan:input_type -> engine.ScanRequest
-	5, // 3: engine.EngineService.Carve:input_type -> engine.CarveRequest
-	7, // 4: engine.EngineService.Hash:input_type -> engine.HashRequest
-	0, // 5: engine.EngineService.Ping:input_type -> engine.Empty
-	3, // 6: engine.EngineService.Scan:output_type -> engine.ScanResult
-	6, // 7: engine.EngineService.Carve:output_type -> engine.CarveResult
-	8, // 8: engine.EngineService.Hash:output_type -> engine.HashResult
-	1, // 9: engine.EngineService.Ping:output_type -> engine.Pong
-	6, // [6:10] is the sub-list for method output_type
-	2, // [2:6] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	4,  // 0: engine.ScanResult.matches:type_name -> engine.FoundItem
+	11, // 1: engine.HashResult.hashes:type_name -> engine.HashResult.HashesEntry
+	2,  // 2: engine.EngineService.Scan:input_type -> engine.ScanRequest
+	5,  // 3: engine.EngineService.Carve:input_type -> engine.CarveRequest
+	7,  // 4: engine.EngineService.Hash:input_type -> engine.HashRequest
+	0,  // 5: engine.EngineService.Ping:input_type -> engine.Empty
+	9,  // 6: engine.EngineService.Walk:input_type -> engine.WalkRequest
+	3,  // 7: engine.EngineService.Scan:output_type -> engine.ScanResult
+	6,  // 8: engine.EngineService.Carve:output_type -> engine.CarveResult
+	8,  // 9: engine.EngineService.Hash:output_type -> engine.HashResult
+	1,  // 10: engine.EngineService.Ping:output_type -> engine.Pong
+	10, // 11: engine.EngineService.Walk:output_type -> engine.WalkEntry
+	7,  // [7:12] is the sub-list for method output_type
+	2,  // [2:7] is the sub-list for method input_type
+	2,  // [2:2] is the sub-list for extension type_name
+	2,  // [2:2] is the sub-list for extension extendee
+	0,  // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_engine_proto_init() }
@@ -648,7 +799,7 @@ func file_engine_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_engine_proto_rawDesc), len(file_engine_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -16,6 +16,9 @@ service EngineService {
   
   // Checks the health/status of the engine
   rpc Ping(Empty) returns (Pong);
+
+  // Walks a directory and streams all file metadata (for Timeline)
+  rpc Walk(WalkRequest) returns (stream WalkEntry);
 }
 
 message Empty {}
@@ -66,4 +69,18 @@ message HashRequest {
 message HashResult {
   string file_path = 1;
   map<string, string> hashes = 2; // algo -> hash_value
+}
+
+message WalkRequest {
+  string root_path = 1;
+}
+
+message WalkEntry {
+  string path = 1;
+  int64 size = 2;
+  int64 mode = 3;
+  int64 modified_time = 4;
+  int64 accessed_time = 5; // Might not be available on all OS
+  int64 created_time = 6;  // Might not be available on all OS
+  bool is_dir = 7;
 }

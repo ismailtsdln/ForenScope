@@ -31,6 +31,36 @@ func (s *Scanner) Close() {
 	s.pool.Stop()
 }
 
+// StreamWalk walks the directory and streams metadata to the server.
+func (s *Scanner) StreamWalk(root string, stream pb.EngineService_WalkServer) error {
+	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			log.Printf("Error accessing path %q: %v\n", path, err)
+			return nil // Don't abort walk on individual access error
+		}
+
+		info, err := d.Info()
+		if err != nil {
+			return nil
+		}
+
+		entry := &pb.WalkEntry{
+			Path:         path,
+			Size:         info.Size(),
+			Mode:         int64(info.Mode()),
+			ModifiedTime: info.ModTime().Unix(),
+			IsDir:        d.IsDir(),
+		}
+
+		if err := stream.Send(entry); err != nil {
+			return err
+		}
+
+		return nil
+	})
+	return err
+}
+
 // ScanDir walks the directory and submits file processing tasks to the worker pool.
 func (s *Scanner) ScanDir(root string) (*pb.ScanResult, error) {
 	// startTime := time.Now()

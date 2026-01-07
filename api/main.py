@@ -9,7 +9,7 @@ from api.ui import router as ui_router
 
 app = FastAPI(
     title="ForenScope API",
-    description="Professional Hybrid Digital Forensics Platform API",
+    description="Professional Hybrid Digital Forensics Plattform | v1.0.0 Stable",
     version="1.0.0"
 )
 

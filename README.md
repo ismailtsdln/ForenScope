@@ -1,121 +1,126 @@
+# ⚡ ForenScope v1.0.0
 
-# ForenScope
+[![Status](https://img.shields.io/badge/Status-Stable-success?style=for-the-badge)](https://github.com/ismailtsdln/ForenScope)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](https://github.com/ismailtsdln/ForenScope/blob/main/LICENSE)
+[![Go](https://img.shields.io/badge/Go-1.21%2B-00ADD8?style=for-the-badge&logo=go)](https://go.dev/)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python)](https://python.org/)
 
-![Status](https://img.shields.io/badge/Status-Beta-orange?style=flat-square)
-![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square)
-![Go](https://img.shields.io/badge/Go-1.21%2B-cyan?style=flat-square)
-![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
+**Professional Hybrid Digital Forensics & Incident Response Platform**
 
-**Professional Hybrid Digital Forensics Platform**
-
-ForenScope is an advanced, high-performance forensic analysis tool designed for modern incident response. It leverages a unique hybrid architecture: **Python** for intelligent orchestration and parsing, and **Go** for high-speed raw data processing.
+ForenScope is an advanced, high-performance forensic analysis tool designed for deep-dive investigations. By combining **Python's** flexible orchestration with **Go's** blazing-fast raw data processing, ForenScope delivers a modern, extensible, and production-ready forensic experience.
 
 ---
 
-## 🚀 Key Features
+## 🚀 Why ForenScope?
 
-*   **Hybrid Power**: Orchestrated by Python, powered by Go. Best of both worlds.
-*   **High Performance Engine**: Parallel disk scanning, carving, and hashing.
-*   **Modular Architecture**: Plugin-based system for artifacts and reporting.
-*   **Rich CLI Interface**: Beautiful, colored output with tables and progress bars.
-*   **Evidence Integrity**: Strict chain-of-custody tracking.
-*   **API First**: Fully controllable via REST API or CLI.
+In modern forensics, speed and intelligence are non-negotiable. ForenScope bridges the gap between slow, scripted tools and complex, hard-to-extend binary engines.
 
-## 🏗 Architecture
+*   **⚡ Hybrid Engine**: Go handles block-level I/O, heavy hashing, and signature scanning via worker pools. Python manages the intelligent analysis logic and artifact parsing.
+*   **🔍 Advanced Artifact Parsing**: Out-of-the-box support for Windows Registry (auto-starts, UserAssist), Browser History (Chrome/Edge/Firefox), and system logs.
+*   **🛡️ Malware Intelligence**: Integrated YARA scanner (optional build) for real-time memory and file-system threat hunting.
+*   **📂 Precision Carving**: Footer-aware file recovery engine that validates file integrity during extraction.
+*   **📊 Narrative Reporting**: Beautiful HTML reports with interactive Vis.js timelines and categorized artifact grids.
 
-The system follows a strict **Hexagonal Architecture**:
+---
+
+## 🏗 Modular Architecture
+
+ForenScope follows a clean, hexagonal architecture designed for reliability and maintainability.
 
 ```mermaid
-graph TD
-    User[User / CLI] --> API[Python Orchestrator]
-    API --> Logic[Forensic Logic]
-    Logic --> Go{Go Engine}
-    Go --> Disk[Raw Disk / IO]
-    Go -- gRPC Results --> Logic
-    Logic --> Repo[Report Engine]
+graph LR
+    subgraph Frontend
+        CLI[CLI Tool]
+        Web[REST API / Swagger]
+    end
+    
+    subgraph Orchestrator
+        PyCore[Python Logic]
+        Parser[Artifact Parsers]
+    end
+    
+    subgraph Engine
+        GoEngine[Go High-Speed Engine]
+        Worker[Worker Pools]
+        Carver[File Carver]
+        Scanner[Signature/YARA]
+    end
+
+    CLI --> PyCore
+    Web --> PyCore
+    PyCore -- gRPC --> GoEngine
+    GoEngine --> Disk[(Raw Evidence)]
+    PyCore --> Report[HTML/PDF/JSON Reports]
 ```
 
-## 🛠 Installation
+---
 
-### Prerequisites
-*   **Python 3.10+**
-*   **Go 1.21+**
-*   **Protoc** (Protocol Buffers Compiler)
+## 🛠 Quick Start
 
-### Build from Source
+### 1. Installation
 
-1.  **Clone the Repository**
-    ```bash
-    git clone https://github.com/ismailtsdln/ForenScope.git
-    cd ForenScope
-    ```
+**Prerequisites**: Python 3.10+, Go 1.21+, Protoc (optional for dev).
 
-2.  **Setup Python Environment**
-    ```bash
-    python -m venv venv
-    source venv/bin/activate
-    pip install -r requirements.txt
-    ```
+```bash
+# Clone and enter
+git clone https://github.com/ismailtsdln/ForenScope.git && cd ForenScope
 
-3.  **Build the Platform** (Generates Protos + Compiles Go Engine)
-    ```bash
-    make all
-    ```
+# Setup Environment
+python -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
 
-## 💻 Usage
+# Build Everything (Requires Makefile)
+make all
+```
 
-### 1. Start the Engine
-The high-performance engine must be running to process heavy tasks.
+### 2. Basic Usage (CLI)
+
+#### Start the Go Engine (Server)
 ```bash
 ./bin/engine
 ```
 
-### 2. Run Commands (CLI)
-Open a new terminal and run forensic commands.
-
-**Ping the System:**
+#### Run a Signature Scan
 ```bash
-python cli/main.py ping
+# Scan a directory with 8 workers
+python cli/main.py scan --path /mnt/evidence --workers 8
 ```
 
-**Scan a Directory/Image (Signature Analysis):**
+#### Carve Evidence from Images
 ```bash
-python cli/main.py scan --image /path/to/evidence --fast
+# Carve files from a raw disk image
+python cli/main.py carve --image ./disk_dump.img --output ./recovered_files
 ```
 
-**Carve Deleted Files (Header Recovery):**
+---
+
+## 🌐 API & Automation
+
+ForenScope is built to be integrated. Start the REST API to manage tasks remotely:
+
 ```bash
-python cli/main.py carve --image /path/to/disk.img --output /path/to/recovered
+uvicorn api.main:app
 ```
+Access the interactive documentation at `http://127.0.0.1:8000/docs`.
 
-### 3. API Server
-Start the REST API for remote management.
-```bash
-uvicorn api.main:app --reload
-```
-Swagger UI will be available at `http://127.0.0.1:8000/docs`.
+---
 
-## 🛡 Development
+## 📝 Roadmap to v2.0
+- [ ] Distributed Engine Support (Multi-node scanning)
+- [ ] Deep Memory Image (Volatility-like) integration
+- [ ] Native macOS Unified Log support
+- [ ] AI-driven anomaly detection in timeline data
 
-### Directory Structure
-*   `core/`: Python domain logic.
-*   `engine/`: Go logic (Scanning, Hashing).
-*   `contracts/`: Protobuf definitions.
-*   `orchestrator/`: Client code to talk to Engine.
+---
 
-### Testing
-```bash
-# Python Tests
-pytest
+## 🤝 Contributing & Support
 
-# Go Tests
-cd engine && go test ./...
-```
+We welcome contributions! Please check our [BUILD.md](docs/BUILD.md) for technical setup and [CONTRIBUTING.md](CONTRIBUTING.md) for workflow details.
 
-## 🤝 Contributing
+**Contact**: ismailtasdelen.pro (via GitHub)
 
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md).
+---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT © 2026 Ismail Tasdelen. ForenScope is a registered mark for professional digital forensics.

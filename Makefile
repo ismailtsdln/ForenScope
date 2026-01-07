@@ -17,5 +17,15 @@ run-engine:
 	@echo "Starting Go Engine..."
 	./bin/engine
 
-scan:
-	python cli/main.py scan --image ./
+clean:
+	@echo "Cleaning up..."
+	rm -rf bin/*
+	rm -rf reports/*
+	rm -rf test_reports/*
+	find . -type d -name "__pycache__" -exec rm -rf {} +
+	rm -rf .pytest_cache
+	rm -f .coverage
+	rm -rf htmlcov
+	rm -f .DS_Store
+	find . -name "*.pyc" -delete
+	@echo "Done."

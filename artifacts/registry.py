@@ -2,15 +2,14 @@ from typing import List
 from datetime import datetime
 import os
 import logging
-from Registry import Registry
-
+import Registry
 from core.artifact import Artifact, Evidence
 
 class RegistryRunKeys(Artifact):
     def __init__(self, hive_path: str):
         self.hive_path = hive_path
-        self._name = "Windows Registry Run Keys"
-        self._description = "Extracts auto-start entries from Run keys in NTUSER.DAT or SOFTWARE hives."
+        self._name = "Windows Registry Analysis"
+        self._description = "Extracts auto-start entries, mount points, and UserAssist from Registry hives."
 
     @property
     def name(self) -> str:
@@ -32,42 +31,54 @@ class RegistryRunKeys(Artifact):
             logging.error(f"Failed to parse registry hive {self.hive_path}: {e}")
             return []
 
-        # Define common run key paths
-        run_paths = [
-            "Microsoft\\Windows\\CurrentVersion\\Run",
-            "Microsoft\\Windows\\CurrentVersion\\RunOnce",
-            "Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run",
-            "Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\RunOnce"
+        # Define targets: (Key Path, Artifact Type Description)
+        targets = [
+            # Run Keys
+            ("Microsoft\\Windows\\CurrentVersion\\Run", "Registry Run Key"),
+            ("Microsoft\\Windows\\CurrentVersion\\RunOnce", "Registry Run Key"),
+            ("Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run", "Registry Run Key"),
+            
+            # MountPoints2 (Network shares / devices)
+            ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MountPoints2", "Registry Mount Point"),
+            
+            # UserAssist (Executed programs)
+            ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\UserAssist", "Registry UserAssist"),
         ]
 
-        # Determine root key based on Hive type (rough check)
-        # Software hive usually doesn't have a root key wrapper like NTUSER sometimes does, 
-        # but typically we start from root.
-        
-        for key_path in run_paths:
+        for key_path, artifact_type in targets:
             try:
-                # Attempt to open key. 
-                # Note: Registry module usually requires traversal from root or open() method
-                try:
-                     key = reg.open(key_path)
-                except Registry.RegistryKeyNotFoundException:
-                     continue
+                key = reg.open(key_path)
+                
+                # For UserAssist, we need to go deeper into subkeys (GUIDs)
+                if "UserAssist" in artifact_type:
+                    for subkey in key.subkeys():
+                        try:
+                            count_key = subkey.open("Count")
+                            for value in count_key.values():
+                                # UserAssist values are ROT13 encoded
+                                evidence_list.append(self._create_evidence(key_path + "\\" + subkey.name(), value, artifact_type, count_key))
+                        except Exception:
+                            continue
+                else:
+                    for value in key.values():
+                        evidence_list.append(self._create_evidence(key_path, value, artifact_type, key))
 
-                for value in key.values():
-                    evidence = Evidence(
-                        source_path=self.hive_path,
-                        artifact_type="Registry Run Key",
-                        data={
-                            "key_path": key_path,
-                            "value_name": value.name(),
-                            "value_data": str(value.value()),
-                            "value_type": value.value_type_str()
-                        },
-                        timestamp=key.timestamp() # Key timestamp is the last write time
-                    )
-                    evidence_list.append(evidence)
-
+            except Registry.RegistryKeyNotFoundException:
+                continue
             except Exception as e:
                 logging.debug(f"Error checking key {key_path} in {self.hive_path}: {e}")
 
         return evidence_list
+
+    def _create_evidence(self, key_path, value, artifact_type, key) -> Evidence:
+        return Evidence(
+            source_path=self.hive_path,
+            artifact_type=artifact_type,
+            data={
+                "key_path": key_path,
+                "value_name": value.name(),
+                "value_data": str(value.value()),
+                "value_type": value.value_type_str()
+            },
+            timestamp=key.timestamp()
+        )

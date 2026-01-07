@@ -152,3 +152,51 @@ class FirefoxHistoryParser(Artifact):
             shutil.rmtree(temp_dir, ignore_errors=True)
             
         return evidence_list
+
+
+class FirefoxCookiesParser(Artifact):
+    def __init__(self, cookies_path: str):
+        self.cookies_path = cookies_path
+        self._name = "Firefox Cookies"
+        self._description = "Parses cookies from Firefox cookies.sqlite database."
+
+    @property
+    def name(self) -> str:
+        return self._name
+
+    @property
+    def description(self) -> str:
+        return self._description
+
+    def extract(self) -> List[Evidence]:
+        evidence_list = []
+        if not os.path.exists(self.cookies_path):
+            return []
+
+        temp_dir = tempfile.mkdtemp()
+        temp_db = os.path.join(temp_dir, "cookies_tmp.sqlite")
+        try:
+            shutil.copy2(self.cookies_path, temp_db)
+            conn = sqlite3.connect(temp_db)
+            cursor = conn.cursor()
+            
+            query = "SELECT baseDomain, name, value, path, creationTime FROM moz_cookies"
+            cursor.execute(query)
+            for row in cursor.fetchall():
+                domain, name, value, path, creation = row
+                # Firefox creationTime is microseconds since epoch
+                dt = datetime.fromtimestamp(creation / 1000000)
+                
+                evidence = Evidence(
+                    source_path=self.cookies_path,
+                    artifact_type="Firefox Cookie",
+                    data={"domain": domain, "name": name, "path": path},
+                    timestamp=dt
+                )
+                evidence_list.append(evidence)
+            conn.close()
+        except Exception:
+            pass
+        finally:
+            shutil.rmtree(temp_dir, ignore_errors=True)
+        return evidence_list

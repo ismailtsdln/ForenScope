@@ -14,7 +14,8 @@ class MockRegistryKeyNotFoundException(Exception):
 mock_registry.RegistryKeyNotFoundException = MockRegistryKeyNotFoundException
 
 sys.modules["Registry"] = mock_registry
-sys.modules["Registry.Registry"] = mock_registry
+# Ensure Registry.Registry refers to the mock module's internal class
+mock_registry.Registry = MagicMock()
 
 from artifacts.registry import RegistryRunKeys
 

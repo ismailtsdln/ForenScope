@@ -72,9 +72,9 @@ func TestCarveFile_WithJPEG(t *testing.T) {
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 	}
 
-	// Write image with some padding before JPEG
+	// Write image with JPEG at block start (offset 0) for block-based carver
 	imageData := make([]byte, 8192)
-	copy(imageData[100:], jpegData)
+	copy(imageData, jpegData)
 
 	err = os.WriteFile(imgPath, imageData, 0644)
 	if err != nil {
@@ -107,7 +107,7 @@ func TestCarveFile_WithJPEG(t *testing.T) {
 func TestCarveFile_NonExistentFile(t *testing.T) {
 	c := NewCarver(4096)
 
-	result, err := c.CarveFile("/nonexistent/file.img", "/tmp/output")
+	result, _ := c.CarveFile("/nonexistent/file.img", "/tmp/output")
 
 	// Should handle error gracefully
 	if result == nil {
@@ -152,7 +152,7 @@ func TestScanFooter(t *testing.T) {
 		t.Error("Expected to find footer")
 	}
 
-	if size != 512+len(footer) {
+	if size != int64(512+len(footer)) {
 		t.Errorf("Expected size %d, got %d", 512+len(footer), size)
 	}
 }

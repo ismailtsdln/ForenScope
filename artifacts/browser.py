@@ -112,15 +112,22 @@ class ChromeCookiesParser(Artifact):
             shutil.copy2(self.cookies_path, temp_db)
             conn = sqlite3.connect(temp_db)
             cursor = conn.cursor()
-            query = "SELECT host_key, name, value, path, creation_utc FROM cookies"
+            # Chromium stores both 'value' (plain) and 'encrypted_value'
+            query = "SELECT host_key, name, value, encrypted_value, path, creation_utc FROM cookies"
             cursor.execute(query)
             for row in cursor.fetchall():
-                host, name, value, path, creation = row
+                host, name, value, enc_value, path, creation = row
+                
+                # If value is empty but enc_value exists, mark as encrypted
+                display_value = value
+                if not value and enc_value:
+                    display_value = "[Encrypted]"
+                
                 dt = self._webkit_timestamp_to_datetime(creation)
                 evidence = Evidence(
                     source_path=self.cookies_path,
                     artifact_type="Browser Cookie",
-                    data={"host": host, "name": name, "path": path},
+                    data={"host": host, "name": name, "path": path, "value": display_value},
                     timestamp=dt
                 )
                 evidence_list.append(evidence)

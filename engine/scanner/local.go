@@ -90,7 +90,8 @@ func (s *Scanner) ScanDir(root string) (*pb.ScanResult, error) {
 				// 1. Signature Scan (Magic Bytes)
 				f, err := os.Open(path)
 				if err != nil {
-					return err
+					log.Printf("Warning: Failed to open %s for signature scan: %v", path, err)
+					return nil // Continue scanning other files
 				}
 				defer f.Close()
 
@@ -98,7 +99,8 @@ func (s *Scanner) ScanDir(root string) (*pb.ScanResult, error) {
 				buf := make([]byte, 32)
 				_, err = io.ReadFull(f, buf)
 				if err != nil && err != io.EOF && err != io.ErrUnexpectedEOF {
-					return err
+					log.Printf("Warning: Failed to read from %s: %v", path, err)
+					return nil
 				}
 
 				sig := MatchSignature(buf)

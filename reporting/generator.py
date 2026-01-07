@@ -53,12 +53,12 @@ class ReportGenerator:
         if not timeline_events and "matches" in data:
             for idx, match in enumerate(data.get("matches", [])):
                 ts = match.get("timestamp")
-                if ts:
+                if ts and isinstance(ts, datetime) and ts.year > 1601:
                     # Vis.js format: {id, content, start, type}
                     timeline_events.append({
                         "id": idx,
                         "content": f"{match.get('artifact_type', 'Evidence')} - {match.get('data', {}).get('value_name', 'Unknown')}",
-                        "start": str(ts),
+                        "start": ts.isoformat(),
                         "type": "box"
                     })
         

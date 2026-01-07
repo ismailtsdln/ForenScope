@@ -70,13 +70,29 @@ class RegistryRunKeys(Artifact):
 
         return evidence_list
 
+    def _rot13_decode(self, s: str) -> str:
+        """Decodes ROT13 encoded strings (used in UserAssist)."""
+        result = ""
+        for char in s:
+            if 'a' <= char <= 'z':
+                result += chr((ord(char) - ord('a') + 13) % 26 + ord('a'))
+            elif 'A' <= char <= 'Z':
+                result += chr((ord(char) - ord('A') + 13) % 26 + ord('A'))
+            else:
+                result += char
+        return result
+
     def _create_evidence(self, key_path, value, artifact_type, key) -> Evidence:
+        value_name = value.name()
+        if "UserAssist" in artifact_type:
+            value_name = self._rot13_decode(value_name)
+
         return Evidence(
             source_path=self.hive_path,
             artifact_type=artifact_type,
             data={
                 "key_path": key_path,
-                "value_name": value.name(),
+                "value_name": value_name,
                 "value_data": str(value.value()),
                 "value_type": value.value_type_str()
             },

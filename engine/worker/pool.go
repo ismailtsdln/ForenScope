@@ -73,11 +73,16 @@ func (p *Pool) checkMemory() bool {
 
 // Submit enqueues a task, respecting memory limits if set.
 func (p *Pool) Submit(t Task) {
-	// Block if memory limit is exceeded
+	// Block if memory limit is exceeded, but with a timeout to prevent infinite hang
+	startWait := time.Now()
 	for !p.checkMemory() {
+		if time.Since(startWait) > 30*time.Second {
+			log.Printf("Memory limit wait timeout exceeded (30s). Proceeding with task to avoid deadlock.")
+			break
+		}
 		log.Printf("Memory limit exceeded (%d MB). Waiting...", p.MaxMemoryMB)
 		select {
-		case <-time.After(500 * time.Millisecond):
+		case <-time.After(1 * time.Second):
 			// Check again
 		case <-p.quit:
 			return

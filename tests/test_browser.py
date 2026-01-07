@@ -31,8 +31,8 @@ def test_chrome_cookies_extraction():
     db_path = os.path.join(temp_dir, "Cookies")
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
-    cursor.execute("CREATE TABLE cookies (host_key TEXT, name TEXT, value TEXT, path TEXT, creation_utc INTEGER)")
-    cursor.execute("INSERT INTO cookies VALUES ('.google.com', 'SID', 'abc123', '/', 13253952000000000)")
+    cursor.execute("CREATE TABLE cookies (host_key TEXT, name TEXT, value TEXT, encrypted_value BLOB, path TEXT, creation_utc INTEGER)")
+    cursor.execute("INSERT INTO cookies VALUES ('.google.com', 'SID', 'abc123', NULL, '/', 13253952000000000)")
     conn.commit()
     conn.close()
 

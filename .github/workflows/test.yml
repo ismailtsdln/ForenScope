@@ -34,22 +34,31 @@ jobs:
         # exit-zero treats all errors as warnings.
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
-  test-go:
+  go-tests:
+    name: Go Engine Tests
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        yara_enabled: [true, false]
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.21'
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+      
+      - name: Install YARA (if needed)
+        if: matrix.yara_enabled == 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libyara-dev
 
-    - name: Install dependencies
-      run: |
-        cd engine
-        go mod tidy
-
-    - name: Run Go Tests
-      run: |
-        cd engine
-        go test -v ./...
+      - name: Test Go Engine
+        run: |
+          if [ "${{ matrix.yara_enabled }}" = "true" ]; then
+            cd engine && go test -v -tags yara ./...
+          else
+            cd engine && go test -v ./...
+          fi

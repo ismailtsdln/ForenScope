@@ -46,27 +46,21 @@ class ReportGenerator:
         with open(css_path, "r") as f:
             css_content = f.read()
 
-        # Prepare Timeline Data from artifacts (mini-timeline)
-        timeline_events = []
+        # Prepare Timeline Data from artifacts (interactive timeline)
+        timeline_events = data.get("timeline_events", [])
         
-        # Add matches
-        for m in data.get("matches", []):
-            # We don't have timestamp in signatures usually, but let's check
-            # ScanResult signatures are usually static.
-            # But Forensic Intel provides timestamps!
-            pass
-            
-        # Add YARA matches
-        # ...
-        
-        # Add Intel items with timestamps
-        intel_timeline = []
-        # Browser History
-        # Registry keys (modified time)
-        # Event logs
-        
-        # Since we receive raw dict 'data', the caller should normalize timeline events beforehand
-        # OR we check specific keys if they exist.
+        # Auto-populate timeline from artifacts if not provided
+        if not timeline_events and "matches" in data:
+            for idx, match in enumerate(data.get("matches", [])):
+                ts = match.get("timestamp")
+                if ts:
+                    # Vis.js format: {id, content, start, type}
+                    timeline_events.append({
+                        "id": idx,
+                        "content": f"{match.get('artifact_type', 'Evidence')} - {match.get('data', {}).get('value_name', 'Unknown')}",
+                        "start": str(ts),
+                        "type": "box"
+                    })
         
         return template.render(
             css_content=css_content,
@@ -77,7 +71,7 @@ class ReportGenerator:
             artifacts_count=len(data.get("matches", [])),
             matches=data.get("matches", []),
             yara_matches=data.get("yara_matches", []),
-            timeline_events=data.get("timeline_events", []) # Expecting list of {id, content, start, type}
+            timeline_events=timeline_events
         )
 
     def generate_html(self, data: dict, filename_prefix: str) -> str:

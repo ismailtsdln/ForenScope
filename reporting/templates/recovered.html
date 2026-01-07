@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/reporting/templates/style.css">
+    <style>
+        body { background-color: #f1f5f9; padding: 40px; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+        .file-list { list-style: none; padding: 0; }
+        .file-item { padding: 12px; border-bottom: 1px solid #e2e8f0; font-family: monospace; color: #475569; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Recovered Evidence</h1>
+        <p>List of files carved and recovered during investigations.</p>
+        
+        <ul class="file-list">
+            {% for file in files %}
+            <li class="file-item">{{ file }}</li>
+            {% else %}
+            <li class="file-item">No files recovered yet.</li>
+            {% endfor %}
+        </ul>
+        
+        <div style="margin-top: 24px;">
+            <a href="/ui" style="color: #6366f1; font-weight: 600;">Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

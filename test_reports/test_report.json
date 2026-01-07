@@ -1,0 +1,39 @@
+{
+    "job_id": "test-job-123",
+    "target_path": "/Users/test/evidence.ad1",
+    "files_scanned": 1500,
+    "matches": [
+        {
+            "artifact_type": "Registry Run Key",
+            "signature_name": "MALICIOUS_RUN_KEY",
+            "file_path": "C:\\Windows\\System32\\config\\SOFTWARE",
+            "offset": 512,
+            "timestamp": "2026-01-07 10:00:00",
+            "data": {
+                "value_name": "Updater",
+                "value_data": "evil.exe"
+            }
+        },
+        {
+            "artifact_type": "Browser History",
+            "signature_name": "SUSPICIOUS_DOMAIN",
+            "file_path": "C:\\Users\\Admin\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\History",
+            "offset": 1024,
+            "timestamp": "2026-01-07 10:30:00",
+            "data": {
+                "value_name": "Download",
+                "value_data": "http://evil.com/payload"
+            }
+        }
+    ],
+    "yara_matches": [
+        {
+            "rule_name": "CobaltStrike_Beacon",
+            "tags": [
+                "malware",
+                "c2"
+            ],
+            "file_path": "/tmp/recovered_carved_1.exe"
+        }
+    ]
+}

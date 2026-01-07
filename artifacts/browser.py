@@ -78,7 +78,58 @@ class ChromeHistoryParser(Artifact):
             logging.error(f"Failed to parse browser history {self.history_path}: {e}")
         finally:
             shutil.rmtree(temp_dir, ignore_errors=True)
-            
+        return evidence_list
+
+
+class ChromeCookiesParser(Artifact):
+    def __init__(self, cookies_path: str):
+        self.cookies_path = cookies_path
+        self._name = "Chrome/Edge Cookies"
+        self._description = "Parses cookies from Chrome/Edge SQLite databases."
+
+    @property
+    def name(self) -> str:
+        return self._name
+
+    @property
+    def description(self) -> str:
+        return self._description
+
+    def _webkit_timestamp_to_datetime(self, webkit_ts: int) -> datetime:
+        if not webkit_ts:
+            return datetime.min
+        epoch_start = datetime(1601, 1, 1)
+        delta = timedelta(microseconds=webkit_ts)
+        return epoch_start + delta
+
+    def extract(self) -> List[Evidence]:
+        evidence_list = []
+        if not os.path.exists(self.cookies_path):
+            return []
+        temp_dir = tempfile.mkdtemp()
+        temp_db = os.path.join(temp_dir, "Cookies_tmp")
+        try:
+            shutil.copy2(self.cookies_path, temp_db)
+            conn = sqlite3.connect(temp_db)
+            cursor = conn.cursor()
+            query = "SELECT host_key, name, value, path, creation_utc FROM cookies"
+            cursor.execute(query)
+            for row in cursor.fetchall():
+                host, name, value, path, creation = row
+                dt = self._webkit_timestamp_to_datetime(creation)
+                evidence = Evidence(
+                    source_path=self.cookies_path,
+                    artifact_type="Browser Cookie",
+                    data={"host": host, "name": name, "path": path},
+                    timestamp=dt
+                )
+                evidence_list.append(evidence)
+            conn.close()
+        except Exception:
+            pass
+        finally:
+            shutil.rmtree(temp_dir, ignore_errors=True)
+        return evidence_list
 
 class FirefoxHistoryParser(Artifact):
     def __init__(self, history_path: str):

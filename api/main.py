@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 import uuid
 import time
+from api.ui import router as ui_router
 
 app = FastAPI(
     title="ForenScope API",
@@ -12,6 +13,8 @@ app = FastAPI(
 
 # In-memory job store for demonstration
 JOBS = {}
+
+app.include_router(ui_router)
 
 class ScanRequest(BaseModel):
     target_path: str

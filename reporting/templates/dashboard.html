@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/reporting/templates/style.css">
+    <style>
+        body { background-color: #f1f5f9; padding: 40px; }
+        .dashboard-container { max-width: 1000px; margin: 0 auto; background: white; padding: 32px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+        .report-list { list-style: none; padding: 0; }
+        .report-item { padding: 16px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+        .report-link { color: #6366f1; font-weight: 600; text-decoration: none; }
+        .report-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>ForenScope Dashboard</h1>
+        <p>Available Investigation Reports</p>
+        
+        <ul class="report-list">
+            {% for report in reports %}
+            <li class="report-item">
+                <span>{{ report }}</span>
+                <a href="/reports/{{ report }}" class="report-link">View Report</a>
+            </li>
+            {% else %}
+            <li class="report-item">No reports generated yet.</li>
+            {% endfor %}
+        </ul>
+        
+        <div style="margin-top: 24px;">
+            <a href="/ui/recovered" style="color: #64748b;">Browse Recovered Files</a>
+        </div>
+    </div>
+</body>
+</html>
